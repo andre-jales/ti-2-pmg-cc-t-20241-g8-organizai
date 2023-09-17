@@ -3,7 +3,7 @@
 
 Escreva um ou dois parágrafo resumindo o objetivo do seu projeto.
 
-## Alunos integrantes da equipe
+## Alunos integrantes da equipe 
 
 * André Leôncio Jales
 * Gustavo Alvarenga Ribeiro Carvalho
