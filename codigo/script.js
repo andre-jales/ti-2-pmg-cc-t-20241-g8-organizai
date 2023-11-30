@@ -22,13 +22,18 @@ fetch('https://json-server-web-api-tarefas.gustavoalvaren3.repl.co/tarefas')
         },
         events: tarefas, // Adiciona as tarefas ao calendário como eventos    
         eventDrop: function (evento, delta, revertFunc) {
-          // Envia uma requisição PUT para atualizar as informações da tarefa no servidor
+          const eventoAtualizado = {
+            start: evento.start.format(), // Atualiza a data de início da tarefa
+            end: evento.end ? evento.end.format() : null // Atualiza a data de término da tarefa, se existir
+          };
+
+          // Envia uma requisição PATCH para atualizar as informações da tarefa no servidor
           fetch(`https://json-server-web-api-tarefas.gustavoalvaren3.repl.co/tarefas/${evento.id}`, {
             method: 'PATCH',
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify(eventoAtualizado), // Inclui todas as informações necessárias
+            body: JSON.stringify(eventoAtualizado) // Inclui todas as informações necessárias
           })
             .then(response => response.json()) // Converte a resposta para JSON
             .then(updatedEvent => {
@@ -54,7 +59,7 @@ fetch('https://json-server-web-api-tarefas.gustavoalvaren3.repl.co/tarefas')
                 late: true
               };
 
-              // Envia uma requisição PUT para atualizar as informações da tarefa no servidor
+              // Envia uma requisição PATCH para atualizar as informações da tarefa no servidor
               fetch(`https://json-server-web-api-tarefas.gustavoalvaren3.repl.co/tarefas/${event.id}`, {
                 method: 'PATCH',
                 headers: {
@@ -68,7 +73,7 @@ fetch('https://json-server-web-api-tarefas.gustavoalvaren3.repl.co/tarefas')
               late: false
             };
 
-            // Envia uma requisição PUT para atualizar as informações da tarefa no servidor
+            // Envia uma requisição PATCH para atualizar as informações da tarefa no servidor
             fetch(`https://json-server-web-api-tarefas.gustavoalvaren3.repl.co/tarefas/${event.id}`, {
               method: 'PATCH',
               headers: {
@@ -109,7 +114,7 @@ fetch('https://json-server-web-api-tarefas.gustavoalvaren3.repl.co/tarefas')
   });
 
 
-  const apiURL = 'https://json-server-web-api-tarefas.gustavoalvaren3.repl.co/tarefas';
+const apiURL = 'https://json-server-web-api-tarefas.gustavoalvaren3.repl.co/tarefas';
 const todo = document.getElementById('to-do');
 const doing = document.getElementById('doing');
 const done = document.getElementById('done');
@@ -421,3 +426,126 @@ new Sortable(done, {
     }
   }
 });
+
+const startButton = document.getElementById('startButton');
+const popup = document.getElementById('popup');
+const tempoAtividadeInput = document.getElementById('tempoAtividade');
+const tempoIntervaloInput = document.getElementById('tempoIntervalo');
+let numRepeticoesInput = document.getElementById('numRepeticoes');
+const submitButton = document.getElementById('submitButton');
+const cronometroDisplay = document.getElementById('cronometro');
+
+let segundos = 0;
+let clique = false;
+let ativ = true;
+
+startButton.addEventListener('dblclick', () => {
+  // Abrir o pop-up ao clicar duas vezes 
+  popup.style.display = 'block';
+  if (popup.style.display = 'block') {
+    clearInterval(cronometro);
+    if (clique = true) {
+      clique = false
+    }
+  }
+});
+
+submitButton.addEventListener('click', () => {
+  // Salvar as informações no Local Storage como JSON
+  const dados = {
+    tempoAtividade: tempoAtividadeInput.value,
+    tempoIntervalo: tempoIntervaloInput.value,
+    numRepeticoes: numRepeticoesInput.value,
+  };
+
+  if (!tempoAtividadeInput.value || !tempoIntervaloInput.value || !numRepeticoesInput.value) {
+    // Fechar o pop-up
+    popup.style.display = 'none';
+  }
+  else {
+
+    if (tempoAtividadeInput.value < 0 || tempoIntervaloInput.value < 0 || numRepeticoesInput.value < 0 || tempoIntervaloInput.value >= tempoAtividadeInput.value) {
+      alert('Certifique-se que os valores são maiores que 0 e o tempo de atividade maior que o intervalo')
+    }
+    else {
+      if (clique = true) {
+        clique = false
+        clearInterval(cronometro);
+        segundos = 0;
+        cronometroDisplay.innerHTML = "00" + ":" + 0 + 0;
+      }
+      localStorage.setItem('dados', JSON.stringify(dados));
+      // Fechar o pop-up
+      popup.style.display = 'none';
+    }
+  }
+});
+
+
+startButton.addEventListener('click', () => {
+  if (!clique) {
+    cronometro = setInterval(() => {
+      segundos++;
+      atualizarCronometro(cronometroDisplay);
+    }, 1000);
+    clique = true
+  }
+
+});
+
+function atualizarCronometro(display) {
+
+
+  let minutos = Math.floor(segundos / 60);
+  let segundosExibicao = segundos % 60;
+
+  const minutosFormatados = minutos < 10 ? '0' + minutos : minutos;
+  const segundosFormatados = segundosExibicao < 10 ? '0' + segundosExibicao : segundosExibicao;
+
+
+  display.innerHTML = minutosFormatados + ':' + segundosFormatados;
+
+  const atv = true
+  const Caudio = new Audio('Beautiful-Music.mp3')
+
+  if (numRepeticoesInput.value == 0) {
+    clearInterval(cronometro);
+    segundos = 0;
+    cronometroDisplay.innerHTML = "00" + ":" + 0 + 0;
+  }
+
+  else {
+
+    if (minutos >= tempoIntervaloInput.value && ativ == false) {
+      clearInterval(cronometro);
+      segundos = 0;
+      cronometroDisplay.innerHTML = "00" + ":" + 0 + 0;
+      if (tempoAtividadeInput.value > 0 || tempoIntervaloInput.value > 0 || numRepeticoesInput.value > 0) {
+        Caudio.play();
+        numRepeticoesInput.value--;
+      }
+      cronometro = setInterval(() => {
+        segundos++;
+        atualizarCronometro(cronometroDisplay);
+      }, 1000)
+      ativ = true;
+    }
+
+    else {
+
+      if (minutos >= tempoAtividadeInput.value && atv === true) {
+        clearInterval(cronometro);
+        segundos = 0;
+        cronometroDisplay.innerHTML = "00" + ":" + 0 + 0;
+        if (tempoAtividadeInput.value > 0 || tempoIntervaloInput.value > 0 || numRepeticoesInput.value > 0) {
+          Caudio.play();
+        }
+        cronometro = setInterval(() => {
+          segundos++;
+          atualizarCronometro(cronometroDisplay);
+        }, 1000)
+        ativ = false;
+      }
+    }
+  }
+}

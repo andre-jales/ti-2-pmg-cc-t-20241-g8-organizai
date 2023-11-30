@@ -125,3 +125,79 @@ body {
 .fc-row {
   margin: 2px;
 }
+
+.start-button:hover {
+  border-radius: 15px;
+}
+
+.submit-button:hover {
+  border-radius: 10px;
+}
+
+#Pomodoro {
+  float: right;
+  margin: 7px;
+  width: 30%;
+}
+
+body {
+  background-color: #333;
+}
+
+.start-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #535353;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 20px;
+
+  font-family: Arial, sans-serif;
+  text-align: center;
+
+  align-items: center;
+  justify-content: center;
+
+  margin: 0;
+}
+
+.popup {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #222;
+  padding: 20px;
+  border: 1px solid #444;
+  z-index: 100;
+  width: 300px;
+}
+
+.popup-header {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.popup input {
+  display: block;
+  margin: 10px 0;
+  padding: 10px;
+  width: 90%;
+  border: none;
+  background-color: #333;
+  color: white;
+}
+
+.submit-button {
+  padding: 5px 10px;
+  font-size: 14px;
+  background-color: #fff;
+  color: #000;
+  border: none;
+  cursor: pointer;
+  border-radius: 20px;
+  width: 40%;
+  margin-right: auto;
+}
