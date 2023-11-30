@@ -434,21 +434,224 @@ const tempoIntervaloInput = document.getElementById('tempoIntervalo');
 let numRepeticoesInput = document.getElementById('numRepeticoes');
 const submitButton = document.getElementById('submitButton');
 const cronometroDisplay = document.getElementById('cronometro');
+const configure = document.getElementById('configure');
+const notifications = document.getElementById('notifications');
+const notifpopup = document.getElementById('popupNot');
+const submitButtonnot = document.getElementById('submitButtonnot');
+const toggleNotifications = document.getElementById('toggleNotifications');
+const notifinit = document.getElementById('notifinit');
+const notifinter = document.getElementById('notifinter');
+const notifativ = document.getElementById('notifativ');
+
+// URL da API JSON Server
+const apiUrl = 'https://json-server-web-api-tarefas.gustavoalvaren3.repl.co/lembretes';
+
+// Recupera o estado do toggle do localStorage
+const toggleState = localStorage.getItem('toggleState');
+
+document.addEventListener('DOMContentLoaded', function () {
+  // Função para salvar o estado do toggle no localStorage
+  function salvarEstadoToggle(id, checked) {
+    localStorage.setItem(id, checked ? 'ativado' : 'desativado');
+  }
+
+  // Adiciona ouvintes de eventos para os toggles
+  document.getElementById('notifinit').addEventListener('change', function () {
+    salvarEstadoToggle('notifinit', this.checked);
+  });
+
+  document.getElementById('notifinter').addEventListener('change', function () {
+    salvarEstadoToggle('notifinter', this.checked);
+  });
+
+  document.getElementById('notifativ').addEventListener('change', function () {
+    salvarEstadoToggle('notifativ', this.checked);
+  });
+
+  // Recupera o estado dos toggles do localStorage e define o estado inicial
+  const estadosIniciais = {
+    'notifinit': localStorage.getItem('notifinit') === 'ativado',
+    'notifinter': localStorage.getItem('notifinter') === 'ativado',
+    'notifativ': localStorage.getItem('notifativ') === 'ativado',
+  };
+
+  // Define o estado inicial dos toggles
+  document.getElementById('notifinit').checked = estadosIniciais['notifinit'];
+  document.getElementById('notifinter').checked = estadosIniciais['notifinter'];
+  document.getElementById('notifativ').checked = estadosIniciais['notifativ'];
+});
+
+
+document.addEventListener('DOMContentLoaded', function () {
+
+  // Define o estado inicial do toggle com base no valor recuperado do localStorage
+  if (toggleState === 'ativado') {
+    toggleNotifications.checked = true;
+  }
+
+  // Adiciona um ouvinte de evento para alterações no toggle
+  toggleNotifications.addEventListener('change', function () {
+    const permitirNotificacoes = toggleNotifications.checked;
+
+    // Salva o estado do toggle no localStorage
+    localStorage.setItem('toggleState', permitirNotificacoes ? 'ativado' : 'desativado');
+
+    // Lógica de ativação de notificações (substitua isso pela sua lógica real)
+    if (permitirNotificacoes) {
+      
+    }
+  });
+
+ 
+
+
+
+// Verifica se o navegador suporta a API de Notificações
+
+
+if ('Notification' in window) {
+  // Solicita permissão para mostrar notificações
+  Notification.requestPermission().then(function (permission) {
+    if (permission === 'granted') {
+      // Cria e exibe uma notificação
+      const notification = new Notification('Título da Notificação', {
+        body: 'Corpo da Notificação',
+
+      });
+
+      // Adiciona um evento de clique à notificação (opcional)
+      notification.addEventListener('click', function () {
+        console.log('Notificação clicada');
+      });
+    } else {
+      console.warn('Permissão para notificações negada pelo usuário');
+    }
+  });
+} else {
+  console.error('Este navegador não suporta a API de Notificações');
+}
+
+// Função para criar e enviar uma notificação
+function enviarNotificacao() {
+  // Verifica se o navegador suporta a API de Notificações
+  if ('Notification' in window) {
+    // Solicita permissão para mostrar notificações
+    Notification.requestPermission().then(function (permission) {
+      if (permission === 'granted') {
+        // Cria e exibe uma notificação com um ícone
+        const notification = new Notification('Título da Notificação', {
+          body: 'Corpo da Notificação',
+
+        });
+
+        // Adiciona um evento de clique à notificação (opcional)
+        notification.addEventListener('click', function () {
+          console.log('Notificação clicada');
+        });
+      } else {
+        console.warn('Permissão para notificações negada pelo usuário');
+      }
+    });
+  } else {
+    console.error('Este navegador não suporta a API de Notificações');
+  }
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+  // Verificar se o navegador suporta notificações
+  if ('Notification' in window) {
+    // Verificar se as notificações estão permitidas
+    if (Notification.permission === 'granted') {
+      console.log('Notificações permitidas');
+    } else if (Notification.permission !== 'denied') {
+      // Se as notificações não foram negadas, mostrar o botão de permissão
+      document.getElementById('configurarNotificacoes');
+    }
+  }
+
+  // Adicionar evento de clique ao botão
+  document.getElementById('configurarNotificacoes').addEventListener('click', function () {
+    const toggleNotifications = document.getElementById('toggleNotifications');
+
+    // Verificar o estado do toggle
+    if (toggleNotifications.checked) {
+      // Se o toggle estiver ligado, solicitar permissão para notificações
+      Notification.requestPermission().then(function (permission) {
+        if (permission === 'granted') {
+          console.log('Notificações permitidas');
+        }
+      });
+    } else {
+      // Se o toggle estiver desligado, desativar notificações
+      Notification.requestPermission().then(function (permission) {
+        if (permission === 'granted') {
+          // Obtenha todas as notificações existentes e feche-as
+          let notifications = window.open('', '_self', '');
+          notifications.close();
+
+          // Notifica o usuário que as notificações foram desativadas
+          console.log('Notificações desativadas');
+        }
+      });
+    }
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 let segundos = 0;
 let clique = false;
 let ativ = true;
 
-startButton.addEventListener('dblclick', () => {
+
+
+
+
+
+configure.addEventListener('click', () => {
   // Abrir o pop-up ao clicar duas vezes 
   popup.style.display = 'block';
-  if (popup.style.display = 'block') {
+  {
     clearInterval(cronometro);
     if (clique = true) {
       clique = false
     }
   }
+
+
 });
+
+
+notifications.addEventListener('click', () => {
+  // Abrir o pop-up ao clicar duas vezes 
+  notifpopup.style.display = 'block';
+})
+
+submitButtonnot.addEventListener('click', () => {
+  notifpopup.style.display = 'none';
+})
+
+
+
+
 
 submitButton.addEventListener('click', () => {
   // Salvar as informações no Local Storage como JSON
@@ -464,7 +667,7 @@ submitButton.addEventListener('click', () => {
   }
   else {
 
-    if (tempoAtividadeInput.value < 0 || tempoIntervaloInput.value < 0 || numRepeticoesInput.value < 0 || tempoIntervaloInput.value >= tempoAtividadeInput.value) {
+    if ((tempoAtividadeInput.value) < 0 || (tempoIntervaloInput.value) < 0 || (numRepeticoesInput.value) < 0) {
       alert('Certifique-se que os valores são maiores que 0 e o tempo de atividade maior que o intervalo')
     }
     else {
@@ -488,6 +691,12 @@ startButton.addEventListener('click', () => {
       segundos++;
       atualizarCronometro(cronometroDisplay);
     }, 1000);
+
+    if (notifinit.checked  && (toggleNotifications.checked )) {
+      ativarNotificacoes();
+    }
+
+
     clique = true
   }
 
@@ -528,6 +737,13 @@ function atualizarCronometro(display) {
         segundos++;
         atualizarCronometro(cronometroDisplay);
       }, 1000)
+
+      if (notifinter.checked  && (toggleNotifications.checked )) {
+        ativarNotificacoes();
+      }
+
+
+
       ativ = true;
     }
 
@@ -544,8 +760,54 @@ function atualizarCronometro(display) {
           segundos++;
           atualizarCronometro(cronometroDisplay);
         }, 1000)
+
+        if (notifativ.checked  && (toggleNotifications.checked )) {
+          ativarNotificacoes();
+        }
+
         ativ = false;
       }
     }
   }
 }
+
+
+
+
+
+
+ // Função para ativar notificações (substitua isso pela sua lógica real)
+ function ativarNotificacoes() {
+  fetch(apiUrl)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`Erro na solicitação: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then(data => {
+      // Verifica se a propriedade "lembretes" existe no objeto
+      if (data && (Array.isArray(data) || typeof data === 'string')) {
+        const lembretes = typeof data === 'string' ? JSON.parse(data) : data;
+
+        // Verifica se "lembretes" é um array
+        if (Array.isArray(lembretes)) {
+          // Itera sobre os lembretes e mostra o conteúdo no console
+          lembretes.forEach(lembrete => {
+            if (lembrete.content) {
+              alert(lembrete.title + ':' + lembrete.content);
+              // Aqui, você pode adicionar a lógica real para ativar as notificações
+            }
+          });
+        } else {
+          console.error('Estrutura de dados inválida: "lembretes" não é um array.');
+        }
+      } else {
+        console.error('Estrutura de dados inválida ou ausência de lembretes.');
+      }
+    })
+    .catch(error => {
+      console.error('Erro ao fazer a solicitação:', error);
+    });
+}
+});

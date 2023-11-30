@@ -18,16 +18,42 @@
     <nav class="navbar navbar-dark">
         <div class="container-fluid">
             <a class="navbar-brand text-white" href="index.html">OrganizAí</a>
-            <div id="Pomodoro"><button id="startButton" class="start-button float-right">Cronômetro Pomodoro</button>
+            <div id="Pomodoro">
+                <button id="notifications" class="start-button">NOTIFICATIONS</button>
+                <button id="configure" class="start-button">CONFIGURE</button>
+                <button id="startButton" class="start-button">START</button>
                 <button class="start-button" id="cronometro">00:00</button>
             </div>
-    
+        
             <div id="popup" class="popup">
                 <div class="popup-header">Inserir Dados</div>
                 <input type="number" id="tempoAtividade" placeholder="Tempo de Atividade (minutos)">
                 <input type="number" id="tempoIntervalo" placeholder="Tempo de Intervalo (minutos)">
                 <input type="number" id="numRepeticoes" placeholder="Número de Repetições">
                 <button id="submitButton" class="submit-button">Salvar e Fechar</button>
+            </div>
+        
+        
+        
+            <div id="popupNot" class="popupnotif">
+                <div class="popup-header">Gerenciar Notificações</div>
+                <label>
+                    <input type="checkbox" id="configurarNotificacoes"> Notificação do Browser
+                </label><br>
+                <label>
+                    <input type="checkbox" id="toggleNotifications"> Notificação Pop-up
+                </label><br>
+                <br><br><div class="popup-header">Tempo dos lembretes</div>
+                <label>
+                    <input type="checkbox" id="notifinit"> Notificação Antes de iniciar
+                </label><br>
+                <label>
+                    <input type="checkbox" id="notifinter"> Notificação no Intervalo
+                </label><br>        <label>
+                    <input type="checkbox" id="notifativ"> Notificação na Atividade 
+                </label><br>
+        
+                <br> <button id="submitButtonnot" class="submit-button">Salvar e Fechar</button>
             </div>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
                 aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">

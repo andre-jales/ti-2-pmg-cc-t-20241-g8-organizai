@@ -44,7 +44,8 @@
 .fc-row .fc-widget-header {
   font-weight: lighter;
 }
-button   {
+
+button {
   all: unset;
 }
 
@@ -84,6 +85,7 @@ button   {
 
 body {
   background-color: #535353;
+  color: white;
 }
 
 .fc-content, .fc-event {
@@ -105,7 +107,7 @@ body {
 }
 
 .coluna-kanban {
-  background: #535353!important;
+  background-color: #535353!important;
   border: none!important;
 }
 
@@ -137,7 +139,7 @@ body {
 #Pomodoro {
   float: right;
   margin: 7px;
-  width: 30%;
+  width: 40%;
 }
 
 body {
@@ -152,17 +154,14 @@ body {
   border: none;
   cursor: pointer;
   border-radius: 20px;
-
   font-family: Arial, sans-serif;
   text-align: center;
-
   align-items: center;
   justify-content: center;
-
   margin: 0;
 }
 
-.popup {
+.popup, .popupnotif {
   display: none;
   position: fixed;
   top: 50%;
