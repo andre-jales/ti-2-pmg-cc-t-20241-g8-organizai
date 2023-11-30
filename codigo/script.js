@@ -1,7 +1,8 @@
 // Declaração de uma array vazia para armazenar as tarefas
 let tarefas = [];
 
-// Fetching dos dados da API usando a URL fornecida
+// Fetching dos dados da API usando a URL fornecida 
+if(document.getElementById('calendar') != null)
 fetch('https://json-server-web-api-tarefas.gustavoalvaren3.repl.co/tarefas')
   .then(response => response.json()) // Converte a resposta para JSON
   .then(data => {
@@ -187,7 +188,7 @@ function addCheckButtonListener() {
   });
 }
 
-function showTasks(tasks) {
+function showtasks(tasks) {
   const table = document.getElementById('tasksTable');
   let contentTodo = '';
   let contentDoing = '';
@@ -251,10 +252,11 @@ function showTasks(tasks) {
     }
 
   })
-
-  todo.innerHTML = contentTodo + todo.innerHTML;
-  doing.innerHTML = contentDoing + doing.innerHTML;
-  done.innerHTML = contentDone + done.innerHTML;
+  if(todo !== null) {
+    todo.innerHTML = contentTodo + todo.innerHTML;
+    doing.innerHTML = contentDoing + doing.innerHTML;
+    done.innerHTML = contentDone + done.innerHTML;
+  }
 
   addStartButtonListener();
   addCheckButtonListener();
@@ -267,7 +269,7 @@ function readtasks() {
     headers: { 'Content-Type': 'application/JSON' }
   })
     .then(res => res.json())
-    .then(data => showTasks(data))
+    .then(data => showtasks(data))
     .catch(error => {
       console.error(error)
     });
@@ -275,6 +277,7 @@ function readtasks() {
 
 readtasks();
 
+if (document.querySelector('.linha-kanban') !== null)
 new Sortable(document.querySelector('.linha-kanban'), {
   animation: 250,
   draggable: '.coluna-kanban',
@@ -282,6 +285,7 @@ new Sortable(document.querySelector('.linha-kanban'), {
   handle: '.colummn-header'
 })
 
+if(todo !== null)
 new Sortable(todo, {
   group: 'shared',
   animation: 300,
@@ -323,6 +327,7 @@ new Sortable(todo, {
   }
 });
 
+if(doing !== null)
 new Sortable(doing, {
   group: 'shared',
   animation: 300,
@@ -364,6 +369,7 @@ new Sortable(doing, {
   }
 });
 
+if(done !== null)
 new Sortable(done, {
   group: 'shared',
   animation: 300,
@@ -456,40 +462,47 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   // Adiciona ouvintes de eventos para os toggles
+  if(document.getElementById('notifinit') != null)
   document.getElementById('notifinit').addEventListener('change', function () {
     salvarEstadoToggle('notifinit', this.checked);
   });
 
+  if(document.getElementById('notifinter') != null)
   document.getElementById('notifinter').addEventListener('change', function () {
     salvarEstadoToggle('notifinter', this.checked);
   });
-
+  
+  if(document.getElementById('notifativ') != null)
   document.getElementById('notifativ').addEventListener('change', function () {
     salvarEstadoToggle('notifativ', this.checked);
   });
 
   // Recupera o estado dos toggles do localStorage e define o estado inicial
+  if(localStorage.getItem('notifinit') != null) {
   const estadosIniciais = {
     'notifinit': localStorage.getItem('notifinit') === 'ativado',
     'notifinter': localStorage.getItem('notifinter') === 'ativado',
     'notifativ': localStorage.getItem('notifativ') === 'ativado',
-  };
+  };}
 
   // Define o estado inicial dos toggles
-  document.getElementById('notifinit').checked = estadosIniciais['notifinit'];
-  document.getElementById('notifinter').checked = estadosIniciais['notifinter'];
-  document.getElementById('notifativ').checked = estadosIniciais['notifativ'];
+  if(document.getElementById('notifinit') != null) {
+    document.getElementById('notifinit').checked = estadosIniciais['notifinit'];
+    document.getElementById('notifinter').checked = estadosIniciais['notifinter'];
+    document.getElementById('notifativ').checked = estadosIniciais['notifativ'];
+  }
 });
 
 
 document.addEventListener('DOMContentLoaded', function () {
 
   // Define o estado inicial do toggle com base no valor recuperado do localStorage
-  if (toggleState === 'ativado') {
+  if (toggleState === 'ativado' && toggleNotifications !== null) {
     toggleNotifications.checked = true;
   }
 
   // Adiciona um ouvinte de evento para alterações no toggle
+  if(toggleNotifications !== null)
   toggleNotifications.addEventListener('change', function () {
     const permitirNotificacoes = toggleNotifications.checked;
 
@@ -597,35 +610,11 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 let segundos = 0;
 let clique = false;
 let ativ = true;
 
-
-
-
-
-
+if(configure !== null)
 configure.addEventListener('click', () => {
   // Abrir o pop-up ao clicar duas vezes 
   popup.style.display = 'block';
@@ -639,16 +628,14 @@ configure.addEventListener('click', () => {
 
 });
 
-
+if(notifications !== null) {
 notifications.addEventListener('click', () => {
   // Abrir o pop-up ao clicar duas vezes 
   notifpopup.style.display = 'block';
 })
-
 submitButtonnot.addEventListener('click', () => {
   notifpopup.style.display = 'none';
 })
-
 
 
 
@@ -770,12 +757,7 @@ function atualizarCronometro(display) {
     }
   }
 }
-
-
-
-
-
-
+}
  // Função para ativar notificações (substitua isso pela sua lógica real)
  function ativarNotificacoes() {
   fetch(apiUrl)
@@ -811,3 +793,306 @@ function atualizarCronometro(display) {
     });
 }
 });
+ 
+
+//passando os elementos como objetos
+const formAddTask = document.getElementById('formAddTask')
+const formEditTask = document.getElementById('formEditTask')
+
+//botoes
+const btnCreateTask = document.getElementById('btnCreateTask')
+const btnEditTask = document.getElementById('btnEditTask')
+const btnDeleteTask = document.getElementById('btnDeleteTask')
+
+//campos form adicionar
+const titleInput = document.getElementById('title')
+const descriptionInput = document.getElementById('description')
+const dateInput = document.getElementById('end-date')
+const priorityInput = document.getElementById('priority')
+
+//campos form editar
+const idEditInput = document.getElementById('idEditInput')
+const titleEditInput = document.getElementById('titleEditInput')
+const descriptionEditInput = document.getElementById('descriptionEditInput')
+const dateEditInput = document.getElementById('dateEditInput')
+const priorityEditInput = document.getElementById('priorityEditInput')
+const statusEditInput = document.getElementById('statusEditInput')
+const lateEditInput = document.getElementById('lateEditInput')
+
+//campo form deletar
+const deleteId = document.getElementById('inputDeleteId')
+
+
+let date = new Date()
+let formatedDate = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`
+
+if(dateInput != null) {
+  dateInput.value = `${formatedDate}T23:59`
+}
+
+//chamar funcao de criar tarefa ao clicar no botao
+if(btnCreateTask != null)
+btnCreateTask.addEventListener('click', event => {
+
+    event.preventDefault()
+
+    if (!formAddTask.checkValidity()) {
+
+        checkInputValid(titleInput)
+        checkInputValid(descriptionInput)
+        checkInputValid(dateInput)
+
+        return
+    }
+
+    let task = {
+        id: 0,
+        title: returnValeuById('title'),
+        description: returnValeuById('description').replace(/(\r\n|\n|\r)/gm,""),
+        start: returnValeuById('end-date'),
+        priority: returnValeuById('priority'),
+        status: 0,
+        late: false
+    }
+
+    createTask(task)
+
+    formAddTask.reset()
+    $('#modalAddTask').modal('toggle')
+
+    //rolar até o fim da página para mostrar a nova tarefa adicionada
+    setTimeout(() => { 
+        readTasks()
+        window.scrollTo(0, document.body.scrollHeight)
+    }, 2000)
+
+})
+
+//chamar funcao de atualizar tarefa ao clicar no botao
+if(btnEditTask != null)
+btnEditTask.addEventListener('click', event => {
+
+
+    console.log('alou')
+
+    event.preventDefault()
+
+    if (!formEditTask.checkValidity()) {
+
+        checkInputValid(titleEditInput)
+        checkInputValid(descriptionEditInput)
+        checkInputValid(dateEditInput)
+
+        return
+    }
+
+    let task = {
+        title: returnValeuById('titleEditInput'),
+        description: returnValeuById('descriptionEditInput').replace(/(\r\n|\n|\r)/gm,""),
+        start: returnValeuById('dateEditInput'),
+        priority: returnValeuById('priorityEditInput'),
+        status: returnValeuById('statusEditInput'),
+        late: returnValeuById('lateEditInput')
+    }
+
+    let id = parseInt(returnValeuById('idEditInput'))
+
+    updateTask(id, task)
+
+    formAddTask.reset()
+    $('#modalEditTask').modal('toggle')
+
+    //atualizar a tabela da dados
+    setTimeout(() => { 
+        readTasks()
+    }, 2000)
+
+})
+
+//chamar funcao de deletar tarefa ao clicar no botao
+if(btnCreateTask != null)
+btnDeleteTask.addEventListener('click', () => {
+
+    let id = parseInt(returnValeuById('inputDeleteId'))
+
+    deleteTask(id)
+
+    $('#modalDeleteTask').modal('toggle')
+
+    //atualizar a tabela da dados
+    setTimeout(() => { 
+        readTasks()
+    }, 2000)
+})
+
+
+//retornar o valor de um elemento pelo id
+const returnValeuById = id => document.getElementById(id).value
+
+//adicionar ou removar classe invalida
+function checkInputValid(input) {
+
+    if (input.value == '')
+        input.classList.add('is-invalid')
+    else
+        input.classList.remove('is-invalid')
+}
+
+//funcoes para exibir mensagens na tela
+function displaySuccsMessage(mensagem) {
+    msg = document.getElementById('msg');
+    msg.innerHTML =
+        `<div class="alert alert-success alert-dismissible fade show" role="alert">
+        ${mensagem}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>`;
+}
+
+function displayErrMessage(mensagem) {
+    msg = document.getElementById('msg');
+    msg.innerHTML =
+        `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+        ${mensagem}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>`;
+}
+
+//formatar dados do server
+function formatDate(dateValue) {
+
+    let date = new Date(dateValue)
+    date = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
+
+    return date;
+}
+
+function formartPriority(priority) {
+    if (priority == 'high') return 'ALTA'
+    else if (priority == 'mid') return 'MÉDIA'
+    else if (priority == 'low') return 'BAIXA'
+}
+
+function formartStatus(status) {
+    if (status == 0) return 'To-Do'
+    else if (status == 1) return 'Doing'
+    else if (status == 2) return 'Done'
+}
+
+//funcoes para exibir dados e modais na tela
+function showTasks(tasks) {
+
+    const table = document.getElementById('tasksTable');
+    let content = '';
+
+    tasks.forEach(task => {
+
+    content +=
+    `<tr>
+        <td>${task.id}</td> 
+        <td>${task.title}</td> 
+        <td>${task.description}</td> 
+        <td>${formatDate(task.start)}</td> 
+        <td>${formartPriority(task.priority)}</td> 
+        <td>${formartStatus(task.status)}</td>
+        <td class="text-center"><i class="bi bi-pencil" title="Editar" 
+        onclick="showTask(${task.id}, '${task.title}', '${task.description}','${task.start}','${task.priority}', ${task.status}, '${task.late}')">
+        </i></td> 
+
+        <td class="text-center"><i class="bi bi-trash" title="Excluir"
+            onclick="deleteConfirm(${task.id})"></i>
+        </td>  
+    </tr>`
+
+    })
+    if(table != null)
+    table.innerHTML = content
+}
+
+function showTask(id, title, description, start, priority, status, late) {
+
+    idEditInput.value = id
+    titleEditInput.value = title
+    descriptionEditInput.value = description
+    dateEditInput.value = start
+    priorityEditInput.value = priority
+    statusEditInput.value = status
+    lateEditInput.value = late
+
+    $('#modalEditTask').modal('toggle')
+}
+
+function deleteConfirm(id) {
+
+    deleteId.value = id;
+    $('#modalDeleteTask').modal('toggle')
+}
+
+//CRUD tarefa no json server
+function createTask(task) {
+    fetch(apiUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(task)
+
+    })
+        .then(res => { 
+            if(res.status == 201) displaySuccsMessage('Tarefa adicionada com sucesso!') 
+            else displayErrMessage('A tarefa não foi adicionada!') 
+        })
+        .catch(error => {
+            console.error(error)
+        })
+}
+
+function readTasks() {
+    fetch(apiUrl, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' }
+    })
+    .then(res => res.json())
+    .then(data => showTasks(data))
+    .catch(error => {
+        console.error(error)
+    })
+}
+
+function readTask(id) {
+    fetch(`${apiUrl}/${id}`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' }
+    })
+    .then(res => res.json())
+    .then(data => {showTask(data)})
+    .catch(error => {
+        console.error(error)
+    })
+}
+
+function updateTask(id, task) {
+    fetch(`${apiUrl}/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(task)
+
+    })
+    .then(res => { 
+        if(res.status == 200) displaySuccsMessage('Tarefa atualizada com sucesso!') 
+        else displayErrMessage('A tarefa não foi atualizada!') 
+    })
+    .catch(error => {
+        console.error(error)
+    })
+}
+
+function deleteTask(id) {
+    fetch(`${apiUrl}/${id}`, {
+        method: 'DELETE'
+    })
+    .then(res => { 
+        if(res.status == 200) displaySuccsMessage('Tarefa excluída com sucesso!') 
+        else displayErrMessage('Não foi possível excluir a tarefa') 
+    })
+    .catch(error => {
+        console.error(error)
+    })
+}
