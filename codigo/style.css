@@ -107,8 +107,9 @@ body {
 }
 
 .coluna-kanban {
-  background-color: #535353!important;
+  background-color: #5353533b!important;
   border: none!important;
+  padding: 25px;
 }
 
 .task {

@@ -450,7 +450,7 @@ const notifinter = document.getElementById('notifinter');
 const notifativ = document.getElementById('notifativ');
 
 // URL da API JSON Server
-const apiUrl = 'https://json-server-web-api-tarefas.gustavoalvaren3.repl.co/lembretes';
+const apiUrlLembrete = 'https://json-server-web-api-tarefas.gustavoalvaren3.repl.co/lembretes';
 
 // Recupera o estado do toggle do localStorage
 const toggleState = localStorage.getItem('toggleState');
@@ -760,7 +760,7 @@ function atualizarCronometro(display) {
 }
  // Função para ativar notificações (substitua isso pela sua lógica real)
  function ativarNotificacoes() {
-  fetch(apiUrl)
+  fetch(apiUrlLembrete)
     .then(response => {
       if (!response.ok) {
         throw new Error(`Erro na solicitação: ${response.status}`);
@@ -1029,7 +1029,7 @@ function deleteConfirm(id) {
 
 //CRUD tarefa no json server
 function createTask(task) {
-    fetch(apiUrl, {
+    fetch(apiURL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(task)
@@ -1045,7 +1045,7 @@ function createTask(task) {
 }
 
 function readTasks() {
-    fetch(apiUrl, {
+    fetch(apiURL, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' }
     })
@@ -1057,7 +1057,7 @@ function readTasks() {
 }
 
 function readTask(id) {
-    fetch(`${apiUrl}/${id}`, {
+    fetch(`${apiURL}/${id}`, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' }
     })
@@ -1069,7 +1069,7 @@ function readTask(id) {
 }
 
 function updateTask(id, task) {
-    fetch(`${apiUrl}/${id}`, {
+    fetch(`${apiURL}/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(task)
@@ -1085,7 +1085,7 @@ function updateTask(id, task) {
 }
 
 function deleteTask(id) {
-    fetch(`${apiUrl}/${id}`, {
+    fetch(`${apiURL}/${id}`, {
         method: 'DELETE'
     })
     .then(res => { 
