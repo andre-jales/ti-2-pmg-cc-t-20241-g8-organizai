@@ -24,7 +24,7 @@
                 <button id="startButton" class="start-button">Começar</button>
                 <button disabled class="start-button" id="cronometro">00:00</button>
             </div>
-        
+
             <div id="popup" class="popup">
                 <div class="popup-header">Inserir Dados</div>
                 <input type="number" id="tempoAtividade" placeholder="Tempo de Atividade (minutos)">
@@ -32,9 +32,9 @@
                 <input type="number" id="numRepeticoes" placeholder="Número de Repetições">
                 <button id="submitButton" class="submit-button">Salvar e Fechar</button>
             </div>
-        
-        
-        
+
+
+
             <div id="popupNot" class="popupnotif">
                 <div class="popup-header">Gerenciar Notificações</div>
                 <label>
@@ -43,16 +43,17 @@
                 <label>
                     <input type="checkbox" id="toggleNotifications"> Notificação Pop-up
                 </label><br>
-                <br><br><div class="popup-header">Tempo dos lembretes</div>
+                <br><br>
+                <div class="popup-header">Tempo dos lembretes</div>
                 <label>
                     <input type="checkbox" id="notifinit"> Notificação Antes de iniciar
                 </label><br>
                 <label>
                     <input type="checkbox" id="notifinter"> Notificação no Intervalo
-                </label><br>        <label>
-                    <input type="checkbox" id="notifativ"> Notificação na Atividade 
+                </label><br> <label>
+                    <input type="checkbox" id="notifativ"> Notificação na Atividade
                 </label><br>
-        
+
                 <br> <button id="submitButtonnot" class="submit-button">Salvar e Fechar</button>
             </div>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
@@ -84,7 +85,7 @@
                 <div
                     class="card-header text-white border-top border-bottom-0 border-5 border-warning border-opacity-75 colummn-header">
                     A Fazer
-                    <button type="button" class="btn btn-secondary btn-sm float-end">+</button>
+                    <button id="" type="button" class="btn btn-secondary btn-sm float-end" data-bs-toggle="modal" data-bs-target="#modalAddTask">+</button>
                 </div>
                 <div class="card-body status" id="to-do">
 
@@ -94,7 +95,7 @@
                 <div
                     class="card-header text-white border-top border-bottom-0 border-5 border-primary border-opacity-75 colummn-header">
                     Em Andamento
-                    <button type="button" class="btn btn-secondary btn-sm float-end">+</button>
+                    <button id="" type="button" class="btn btn-secondary btn-sm float-end" data-bs-toggle="modal" data-bs-target="#modalAddTask">+</button>
                 </div>
                 <div class="card-body status doing" id="doing">
 
@@ -104,10 +105,136 @@
                 <div
                     class="card-header text-white border-top border-bottom-0 border-5 border-success border-opacity-75 colummn-header">
                     Concluído
-                    <button type="button" id="btn" class="btn btn-secondary btn-sm float-end">+</button>
+                    <button id="" type="button" class="btn btn-secondary btn-sm float-end" data-bs-toggle="modal" data-bs-target="#modalAddTask">+</button>
                 </div>
                 <div class="card-body status" id="done">
 
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalAddTask" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Adicionar tarefa</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                        style="color: #fff;"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="" id="formAddTask" method="POST">
+                        <div class="row">
+                            <section class="col sectionInput">
+                                <label for="title" class="form-label">Título</label>
+                                <input type="text" id="title" class="form-control" required
+                                    placeholder="Insira o título da tarefa">
+                                <div class="invalid-feedback">Este campo é obrigatório</div>
+                            </section>
+                        </div>
+
+                        <div class="row">
+                            <section class="col sectionInput">
+                                <label for="description" class="form-label">Descrição</label>
+                                <textarea name="" id="description" class="form-control" rows="3" required
+                                    maxlength="250" placeholder="Insira a descrição da tarefa"></textarea>
+                                <div class="invalid-feedback">Este campo é obrigatório</div>
+                            </section>
+                        </div>
+
+                        <div class="row">
+                            <section class="col sectionInput">
+                                <label for="end-date" class="form-label">Data de entrega</label>
+                                <input type="datetime-local" id="end-date" class="form-control" required>
+                                <div class="invalid-feedback">Este campo é obrigatório</div>
+                            </section>
+
+                            <section class="col sectionInput">
+                                <label for="priority" class="form-label">Prioridade</label>
+                                <select name="priority" id="priority" class="form-select" required>
+                                    <option value="high">ALTA</option>
+                                    <option value="mid">MÉDIA</option>
+                                    <option value="low">BAIXA</option>
+                                </select>
+                            </section>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="btnCreateTask" class="btn btn-secondary">Adicionar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalEditTask" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Editar tarefa</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                        style="color: #fff;"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="" id="formEditTask" method="PUT">
+                        <input type="hidden" id="idEditInput">
+                        <input type="hidden" id="statusEditInput">
+                        <input type="hidden" id="lateEditInput">
+                        <div class="row">
+                            <section class="col sectionInput">
+                                <label for="titleEditInput class=" form-label">Título</label>
+                                <input type="text" id="titleEditInput" class="form-control" required
+                                    placeholder="Insira o título da tarefa">
+                                <div class="invalid-feedback">Este campo é obrigatório</div>
+                            </section>
+                        </div>
+
+                        <div class="row">
+                            <section class="col sectionInput">
+                                <label for="descriptionEditInput" class="form-label">Descrição</label>
+                                <textarea name="" id="descriptionEditInput" class="form-control" rows="3" required
+                                    maxlength="250" placeholder="Insira a descrição da tarefa"></textarea>
+                                <div class="invalid-feedback">Este campo é obrigatório</div>
+                            </section>
+                        </div>
+
+                        <div class="row">
+                            <section class="col sectionInput">
+                                <label for="dateEditInput" class="form-label">Data de entrega</label>
+                                <input type="datetime-local" id="dateEditInput" class="form-control" required>
+                                <div class="invalid-feedback">Este campo é obrigatório</div>
+                            </section>
+
+                            <section class="col sectionInput">
+                                <label for="priorityEditInput" class="form-label">Prioridade</label>
+                                <select name="priority" id="priorityEditInput" class="form-select" required>
+                                    <option value="high">ALTA</option>
+                                    <option value="mid">MÉDIA</option>
+                                    <option value="low">BAIXA</option>
+                                </select>
+                            </section>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="btnEditTask" class="btn btn-secondary">Salvar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalDeleteTask" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Excluir tarefa?</h5>
+                </div>
+                <form>
+                    <input type="hidden" id="inputDeleteId">
+                </form>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" id="btnDeleteTask" class="btn btn-danger">Excluir</button>
                 </div>
             </div>
         </div>
