@@ -44,7 +44,7 @@ function addButtonListener(btn, status) {
     const taskId = taskContainer.querySelector('.id').innerText;
 
     if (status === 1) {
-      btn.innerHTML = '<img src="imgs/check.png" alt="check" width="20">';
+      btn.innerHTML = '<img src="assets/images/check.png" alt="check" width="20">';
       btn.classList.add("check");
       btn.classList.remove("start");
       taskContainer.remove();
@@ -99,8 +99,8 @@ function showtasks(tasks) {
     if (task.status == 0) {
       contentTodo += `<div class="card task">
         <div class="card-body task-body ${priorityClass}">
-        <button type="button" class="btn btn-light btn-sm float-end m-1 rounded-circle" onclick="deleteConfirm(${task.id})"><img src="imgs/excluir.png" alt="excluir" width="15"></button>
-        <button type="button" class="btn btn-light btn-sm float-end m-1 rounded-circle"><img src="imgs/editar.png" alt="editar" width="15"></button>
+        <button type="button" class="btn btn-light btn-sm float-end m-1 rounded-circle" onclick="deleteConfirm(${task.id})"><img src="assets/images/excluir.png" alt="excluir" width="15"></button>
+        <button type="button" class="btn btn-light btn-sm float-end m-1 rounded-circle"><img src="assets/images/editar.png" alt="editar" width="15"></button>
         <span class="id d-none" id="task${task.id}">${task.id}</span>
         <h5 class="card-title">${task.title}</h5>
           <p class="card-text">${task.description}</p>
@@ -114,14 +114,14 @@ function showtasks(tasks) {
     if (task.status == 1) {
       contentDoing += `<div class="card task">
         <div class="card-body task-body ${priorityClass}">
-        <button type="button" class="btn btn-light btn-sm float-end m-1 rounded-circle" onclick="deleteConfirm(${task.id})"><img src="imgs/excluir.png" alt="excluir" width="15"></button>
-        <button type="button" class="btn btn-light btn-sm float-end m-1 rounded-circle"><img src="imgs/editar.png" alt="editar" width="15"></button>
+        <button type="button" class="btn btn-light btn-sm float-end m-1 rounded-circle" onclick="deleteConfirm(${task.id})"><img src="assets/images/excluir.png" alt="excluir" width="15"></button>
+        <button type="button" class="btn btn-light btn-sm float-end m-1 rounded-circle"><img src="assets/images/editar.png" alt="editar" width="15"></button>
         <span class="id d-none" id="task${task.id}">${task.id}</span>
         <h5 class="card-title">${task.title}</h5>
           <p class="card-text">${task.description}</p>
           <p class="card-text">Prazo: ${formatDate(task.start)}</p>
           <p class="card-text priority">Prioridade: ${formatPriority(task.priority)}</p>
-          <button type="button" class="btn btn-light btn-sm float-end check"><img src="imgs/check.png" alt="check" width="20"></button>
+          <button type="button" class="btn btn-light btn-sm float-end check"><img src="assets/images/check.png" alt="check" width="20"></button>
         </div>
       </div>`
     }
@@ -129,8 +129,8 @@ function showtasks(tasks) {
     if (task.status == 2) {
       contentDone += `<div class="card task">
           <div class="card-body task-body border-5 border-start border-success rounded-start-2">
-            <button type="button" class="btn btn-light btn-sm float-end m-1 rounded-circle" onclick="deleteConfirm(${task.id})"><img src="imgs/excluir.png" alt="excluir" width="15"></button>
-            <button type="button" class="btn btn-light btn-sm float-end m-1 rounded-circle"><img src="imgs/editar.png" alt="editar" width="15"></button>
+            <button type="button" class="btn btn-light btn-sm float-end m-1 rounded-circle" onclick="deleteConfirm(${task.id})"><img src="assets/images/excluir.png" alt="excluir" width="15"></button>
+            <button type="button" class="btn btn-light btn-sm float-end m-1 rounded-circle"><img src="assets/images/editar.png" alt="editar" width="15"></button>
             <span class="id d-none" id="task${task.id}">${task.id}</span>
             <h5 class="card-title">${task.title}</h5>
             <p class="card-text">${task.description}</p>
@@ -201,7 +201,7 @@ new Sortable(todo, {
       const droppedTask = evt.item;
       const taskId = droppedTask.querySelector('.id').innerText;
       const taskBody = droppedTask.querySelector('.task-body');
-      taskBody.innerHTML += `<button type="button" class="btn btn-light btn-sm float-end check"><img src="imgs/check.png" alt="check" width="20"></button>`;
+      taskBody.innerHTML += `<button type="button" class="btn btn-light btn-sm float-end check"><img src="assets/images/check.png" alt="check" width="20"></button>`;
       addCheckButtonListener();
       updateStatus(taskId, 1);
     }
@@ -243,7 +243,7 @@ new Sortable(doing, {
       const droppedTask = evt.item;
       const taskId = droppedTask.querySelector('.id').innerText;
       const taskBody = droppedTask.querySelector('.task-body');
-      taskBody.innerHTML += `<button type="button" class="btn btn-light btn-sm float-end check"><img src="imgs/check.png" alt="check" width="20"></button>`;
+      taskBody.innerHTML += `<button type="button" class="btn btn-light btn-sm float-end check"><img src="assets/images/check.png" alt="check" width="20"></button>`;
       addCheckButtonListener();
       updateStatus(taskId, 1);
     }
@@ -307,7 +307,7 @@ new Sortable(done, {
       else if (priority === "Prioridade: ALTA") {
         taskBody.classList.add("border-start", "rounded-start-2", "border-5", "border-danger-subtle");
       }
-      taskBody.innerHTML += `<button type="button" class="btn btn-light btn-sm float-end check"><img src="imgs/check.png" alt="check" width="20"></button>`;
+      taskBody.innerHTML += `<button type="button" class="btn btn-light btn-sm float-end check"><img src="assets/images/check.png" alt="check" width="20"></button>`;
       addCheckButtonListener();
       updateStatus(taskId, 1);
     }
