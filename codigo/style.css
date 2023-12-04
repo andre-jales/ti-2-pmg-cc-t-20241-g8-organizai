@@ -32,9 +32,10 @@
 
 .fc-unthemed td.fc-today .fc-day-number {
   background-color: red;
-  border-radius: 100%;
   margin: 3px;
-  padding: 3px;
+  padding-left: 8px;
+  padding-right: 8px;
+  border-radius: 100%;
 }
 
 .fc-other-month {
