@@ -2,117 +2,7 @@
 let tarefas = [];
 
 // Fetching dos dados da API usando a URL fornecida 
-if(document.getElementById('calendar') != null)
-fetch('https://json-server-web-api-tarefas.gustavoalvaren3.repl.co/tarefas')
-  .then(response => response.json()) // Converte a resposta para JSON
-  .then(data => {
-    tarefas = data; // Armazena os dados da resposta na array de tarefas
 
-    // Configuração do calendário após os dados serem carregados
-    jQuery(function () {
-      jQuery('#calendar').fullCalendar({
-        // Configurações do calendário
-        businessHours: false,
-        defaultView: 'month',
-        editable: true,
-        height: 600,
-        header: {
-          left: 'title',
-          center: 'month,agendaWeek,agendaDay',
-          right: 'prev, today, next'
-        },
-        events: tarefas, // Adiciona as tarefas ao calendário como eventos    
-        eventDrop: function (evento, delta, revertFunc) {
-          const eventoAtualizado = {
-            start: evento.start.format(), // Atualiza a data de início da tarefa
-            end: evento.end ? evento.end.format() : null // Atualiza a data de término da tarefa, se existir
-          };
-
-          // Envia uma requisição PATCH para atualizar as informações da tarefa no servidor
-          fetch(`https://json-server-web-api-tarefas.gustavoalvaren3.repl.co/tarefas/${evento.id}`, {
-            method: 'PATCH',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(eventoAtualizado) // Inclui todas as informações necessárias
-          })
-            .then(response => response.json()) // Converte a resposta para JSON
-            .then(updatedEvent => {
-              // Atualiza a tarefa na lista local com os dados atualizados
-              const index = tarefas.findIndex(tarefa => tarefa.id === updatedEvent.id);
-              tarefas[index] = updatedEvent;
-
-              // Atualiza o calendário com as tarefas atualizadas
-              jQuery('#calendar').fullCalendar('refetchEvents');
-            })
-            .catch(error => {
-              console.error('Erro ao atualizar a tarefa:', error);
-              revertFunc(); // Reverte a mudança se houver um erro na atualização
-            });
-        },
-        eventRender: function (event, element) {
-          // Verifica se a tarefa está em atraso
-          if (event.end && event.end.isBefore(moment())) {
-            // Aplica um estilo para destacar em vermelho
-            element.css('background-color', 'red');
-            if (event.late !== true) {
-              const eventoAtualizado = {
-                late: true
-              };
-
-              // Envia uma requisição PATCH para atualizar as informações da tarefa no servidor
-              fetch(`https://json-server-web-api-tarefas.gustavoalvaren3.repl.co/tarefas/${event.id}`, {
-                method: 'PATCH',
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(eventoAtualizado), // Inclui todas as informações necessárias
-              })
-            }
-          } else if (event.late !== false){
-            const eventoAtualizado = {
-              late: false
-            };
-
-            // Envia uma requisição PATCH para atualizar as informações da tarefa no servidor
-            fetch(`https://json-server-web-api-tarefas.gustavoalvaren3.repl.co/tarefas/${event.id}`, {
-              method: 'PATCH',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify(eventoAtualizado), // Inclui todas as informações necessárias
-            })
-          }
-        },
-
-        locale: 'pt-br', // Define o idioma para português brasileiro
-        buttonText: {
-          today: 'Hoje',
-          month: 'Mês',
-          week: 'Semana',
-          day: 'Dia',
-        },
-        monthNames: [
-          'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
-          'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
-        ],
-        monthNamesShort: [
-          'Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun',
-          'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'
-        ],
-        dayNames: [
-          'Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'
-        ],
-        dayNamesShort: [
-          'Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'
-        ]
-      });
-    });
-  })
-  .catch(error => {
-    console.error('Erro:', error);
-    window.alert('Erro ao carregar as tarefas\nContate o desenvolvedor!'); // Exibe um alerta em caso de erro
-  });
 
 
 const apiURL = 'https://json-server-web-api-tarefas.gustavoalvaren3.repl.co/tarefas';
@@ -209,9 +99,9 @@ function showtasks(tasks) {
     if (task.status == 0) {
       contentTodo += `<div class="card task">
         <div class="card-body task-body ${priorityClass}">
-        <button type="button" class="btn btn-light btn-sm float-end m-1 rounded-circle"><img src="imgs/excluir.png" alt="excluir" width="15"></button>
+        <button type="button" class="btn btn-light btn-sm float-end m-1 rounded-circle" onclick="deleteConfirm(${task.id})"><img src="imgs/excluir.png" alt="excluir" width="15"></button>
         <button type="button" class="btn btn-light btn-sm float-end m-1 rounded-circle"><img src="imgs/editar.png" alt="editar" width="15"></button>
-        <span class="id d-none">${task.id}</span>
+        <span class="id d-none" id="task${task.id}">${task.id}</span>
         <h5 class="card-title">${task.title}</h5>
           <p class="card-text">${task.description}</p>
           <p class="card-text">Prazo: ${formatDate(task.start)}</p>
@@ -224,9 +114,9 @@ function showtasks(tasks) {
     if (task.status == 1) {
       contentDoing += `<div class="card task">
         <div class="card-body task-body ${priorityClass}">
-        <button type="button" class="btn btn-light btn-sm float-end m-1 rounded-circle"><img src="imgs/excluir.png" alt="excluir" width="15"></button>
+        <button type="button" class="btn btn-light btn-sm float-end m-1 rounded-circle" onclick="deleteConfirm(${task.id})"><img src="imgs/excluir.png" alt="excluir" width="15"></button>
         <button type="button" class="btn btn-light btn-sm float-end m-1 rounded-circle"><img src="imgs/editar.png" alt="editar" width="15"></button>
-        <span class="id d-none">${task.id}</span>
+        <span class="id d-none" id="task${task.id}">${task.id}</span>
         <h5 class="card-title">${task.title}</h5>
           <p class="card-text">${task.description}</p>
           <p class="card-text">Prazo: ${formatDate(task.start)}</p>
@@ -239,9 +129,9 @@ function showtasks(tasks) {
     if (task.status == 2) {
       contentDone += `<div class="card task">
           <div class="card-body task-body border-5 border-start border-success rounded-start-2">
-            <button type="button" class="btn btn-light btn-sm float-end m-1 rounded-circle"><img src="imgs/excluir.png" alt="excluir" width="15"></button>
+            <button type="button" class="btn btn-light btn-sm float-end m-1 rounded-circle" onclick="deleteConfirm(${task.id})"><img src="imgs/excluir.png" alt="excluir" width="15"></button>
             <button type="button" class="btn btn-light btn-sm float-end m-1 rounded-circle"><img src="imgs/editar.png" alt="editar" width="15"></button>
-            <span class="id d-none">${task.id}</span>
+            <span class="id d-none" id="task${task.id}">${task.id}</span>
             <h5 class="card-title">${task.title}</h5>
             <p class="card-text">${task.description}</p>
             <p class="card-text">Prazo: ${formatDate(task.start)}</p>
@@ -917,6 +807,8 @@ btnDeleteTask.addEventListener('click', () => {
 
     deleteTask(id)
 
+    $(`#task${id}`).closest('.task').remove();
+
     $('#modalDeleteTask').modal('toggle')
 
     //atualizar a tabela da dados
@@ -1096,3 +988,149 @@ function deleteTask(id) {
         console.error(error)
     })
 }
+
+
+if(document.getElementById('calendar') != null)
+fetch('https://json-server-web-api-tarefas.gustavoalvaren3.repl.co/tarefas')
+  .then(response => response.json()) // Converte a resposta para JSON
+  .then(data => {
+    tarefas = data; // Armazena os dados da resposta na array de tarefas
+
+    // Configuração do calendário após os dados serem carregados
+    jQuery(function () {
+      jQuery('#calendar').fullCalendar({
+        // Configurações do calendário
+        businessHours: false,
+        defaultView: 'month',
+        editable: true,
+        height: 600,
+        header: {
+          left: 'title',
+          center: 'month,agendaWeek,agendaDay',
+          right: 'prev, today, next'
+        },
+        events: tarefas, // Adiciona as tarefas ao calendário como eventos    
+        eventDrop: function (evento, delta, revertFunc) {
+          const eventoAtualizado = {
+            start: evento.start.format(), // Atualiza a data de início da tarefa
+            end: evento.end ? evento.end.format() : null // Atualiza a data de término da tarefa, se existir
+          };
+
+          // Envia uma requisição PATCH para atualizar as informações da tarefa no servidor
+          fetch(`https://json-server-web-api-tarefas.gustavoalvaren3.repl.co/tarefas/${evento.id}`, {
+            method: 'PATCH',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(eventoAtualizado) // Inclui todas as informações necessárias
+          })
+            .then(response => response.json()) // Converte a resposta para JSON
+            .then(updatedEvent => {
+              // Atualiza a tarefa na lista local com os dados atualizados
+              const index = tarefas.findIndex(tarefa => tarefa.id === updatedEvent.id);
+              tarefas[index] = updatedEvent;
+
+              // Atualiza o calendário com as tarefas atualizadas
+              jQuery('#calendar').fullCalendar('refetchEvents');
+            })
+            .catch(error => {
+              console.error('Erro ao atualizar a tarefa:', error);
+              revertFunc(); // Reverte a mudança se houver um erro na atualização
+            });
+        },
+        eventRender: function (event, element) {
+          // Verifica se a tarefa está em atraso
+          if (event.end && event.end.isBefore(moment())) {
+            // Aplica um estilo para destacar em vermelho
+            element.css('background-color', 'red');
+            if (event.late !== true) {
+              const eventoAtualizado = {
+                late: true
+              };
+
+              // Envia uma requisição PATCH para atualizar as informações da tarefa no servidor
+              fetch(`https://json-server-web-api-tarefas.gustavoalvaren3.repl.co/tarefas/${event.id}`, {
+                method: 'PATCH',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(eventoAtualizado), // Inclui todas as informações necessárias
+              })
+            }
+          } else if (event.late !== false){
+            const eventoAtualizado = {
+              late: false
+            };
+
+            // Envia uma requisição PATCH para atualizar as informações da tarefa no servidor
+            fetch(`https://json-server-web-api-tarefas.gustavoalvaren3.repl.co/tarefas/${event.id}`, {
+              method: 'PATCH',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(eventoAtualizado), // Inclui todas as informações necessárias
+            })
+          }
+        },
+        // dayClick: (date, event, view) => {
+        //   event.preventDefault()
+      
+        //   if (!formAddTask.checkValidity()) {
+      
+        //       checkInputValid(titleInput)
+        //       checkInputValid(descriptionInput)
+        //       checkInputValid(dateInput)
+      
+        //       return
+        //   }
+      
+        //   let task = {
+        //       id: 0,
+        //       title: returnValeuById('title'),
+        //       description: returnValeuById('description').replace(/(\r\n|\n|\r)/gm,""),
+        //       start: returnValeuById('end-date'),
+        //       priority: returnValeuById('priority'),
+        //       status: 0,
+        //       late: false
+        //   }
+      
+        //   createTask(task)
+      
+        //   formAddTask.reset()
+        //   $('#modalAddTask').modal('toggle')
+      
+        //   //rolar até o fim da página para mostrar a nova tarefa adicionada
+        //   setTimeout(() => { 
+        //       readTasks()
+        //       window.scrollTo(0, document.body.scrollHeight)
+        //   }, 2000)},
+      
+
+        locale: 'pt-br', // Define o idioma para português brasileiro
+        buttonText: {
+          today: 'Hoje',
+          month: 'Mês',
+          week: 'Semana',
+          day: 'Dia',
+        },
+        monthNames: [
+          'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+          'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
+        ],
+        monthNamesShort: [
+          'Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun',
+          'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'
+        ],
+        dayNames: [
+          'Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'
+        ],
+        dayNamesShort: [
+          'Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'
+        ]
+      });
+    });
+  })
+  .catch(error => {
+    console.error('Erro:', error);
+    window.alert('Erro ao carregar as tarefas\nContate o desenvolvedor!'); // Exibe um alerta em caso de erro
+  });
