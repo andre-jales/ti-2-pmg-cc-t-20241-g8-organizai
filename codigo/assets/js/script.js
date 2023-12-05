@@ -44,15 +44,34 @@ function addButtonListener(btn, status) {
     const taskId = taskContainer.querySelector('.id').innerText;
 
     if (status === 1) {
-      btn.innerHTML = '<img src="assets/images/check.png" alt="check" width="20">';
+      btn.innerHTML = '<i class="bi bi-check"></i>';
       btn.classList.add("check");
       btn.classList.remove("start");
+      var elementoIrmaoAnterior = btn.previousElementSibling;
+      while (elementoIrmaoAnterior && !elementoIrmaoAnterior.classList.contains('btn-editar')) {
+        elementoIrmaoAnterior = elementoIrmaoAnterior.previousElementSibling;
+      }
+      var eClick = elementoIrmaoAnterior.onclick.toString().match(/showTask\([^)]*\)/)[0];
+      let taskArray = eClick.split(',');
+      taskArray[taskArray.length - 2] = ` ${status}`;
+      let modifiedOnclick = taskArray.join(',');
+      elementoIrmaoAnterior.setAttribute('onclick', modifiedOnclick);
       taskContainer.remove();
       doing.insertBefore(taskContainer, doing.firstChild);
+      addCheckButtonListener();
     } else if (status === 2) {
       const taskBody = taskContainer.querySelector('.task-body');
       taskBody.classList.remove('border-danger-subtle', 'border-warning-subtle', 'border-success-subtle', 'border-start', 'rounded-start-2', 'border-5');
       taskBody.classList.add("border-5", "border-start", "border-success", "rounded-start-2");
+      var elementoIrmaoAnterior = btn.previousElementSibling;
+      while (elementoIrmaoAnterior && !elementoIrmaoAnterior.classList.contains('btn-editar')) {
+        elementoIrmaoAnterior = elementoIrmaoAnterior.previousElementSibling;
+      }
+      var eClick = elementoIrmaoAnterior.onclick.toString().match(/showTask\([^)]*\)/)[0];
+      let taskArray = eClick.split(',');
+      taskArray[taskArray.length - 2] = ` ${status}`;
+      let modifiedOnclick = taskArray.join(',');
+      elementoIrmaoAnterior.setAttribute('onclick', modifiedOnclick);
       btn.remove();
       taskBody.innerHTML += '<p class="float-end m-0 text-success task-status-completed">Tarefa completa!</p>';
       taskContainer.remove();
@@ -97,40 +116,40 @@ function showtasks(tasks) {
     }
 
     if (task.status == 0) {
-      contentTodo += `<div class="card task">
+      contentTodo = `<div class="card task">
         <div class="card-body task-body ${priorityClass}">
-        <button type="button" class="btn btn-light btn-sm float-end m-1 rounded-circle" onclick="deleteConfirm(${task.id})"><img src="assets/images/excluir.png" alt="excluir" width="15"></button>
-        <button type="button" class="btn btn-light btn-sm float-end m-1 rounded-circle"><img src="assets/images/editar.png" alt="editar" width="15"></button>
+        <button type="button" class="btn btn-sm float-end m-1 rounded-circle" onclick="deleteConfirm(${task.id})"><i class="bi bi-trash" title="Excluir"></i></button>
+        <button type="button" class="btn btn-sm float-end m-1 rounded-circle btn-editar" onclick="showTask(${task.id}, '${task.title}', '${task.description}','${task.start}','${task.priority}', ${task.status}, '${task.late}')"><i class="bi bi-pencil" title="Editar"></i></button>
         <span class="id d-none" id="task${task.id}">${task.id}</span>
         <h5 class="card-title">${task.title}</h5>
           <p class="card-text">${task.description}</p>
           <p class="card-text">Prazo: ${formatDate(task.start)}</p>
           <p class="card-text priority">Prioridade: ${formatPriority(task.priority)}</p>
-          <button type="button" class="btn btn-light btn-sm float-end start">➔</button>
+          <button type="button" class="btn btn-sm float-end start"><i class="bi bi-play"></i></button>
         </div>
-      </div>`
+      </div>` + contentTodo;
     }
 
     if (task.status == 1) {
-      contentDoing += `<div class="card task">
+      contentDoing = `<div class="card task">
         <div class="card-body task-body ${priorityClass}">
-        <button type="button" class="btn btn-light btn-sm float-end m-1 rounded-circle" onclick="deleteConfirm(${task.id})"><img src="assets/images/excluir.png" alt="excluir" width="15"></button>
-        <button type="button" class="btn btn-light btn-sm float-end m-1 rounded-circle"><img src="assets/images/editar.png" alt="editar" width="15"></button>
+        <button type="button" class="btn btn-sm float-end m-1 rounded-circle" onclick="deleteConfirm(${task.id})"><i class="bi bi-trash" title="Excluir"></i></button>
+        <button type="button" class="btn btn-sm float-end m-1 rounded-circle btn-editar" onclick="showTask(${task.id}, '${task.title}', '${task.description}','${task.start}','${task.priority}', ${task.status}, '${task.late}')"><i class="bi bi-pencil" title="Editar"></i></button>
         <span class="id d-none" id="task${task.id}">${task.id}</span>
         <h5 class="card-title">${task.title}</h5>
           <p class="card-text">${task.description}</p>
           <p class="card-text">Prazo: ${formatDate(task.start)}</p>
           <p class="card-text priority">Prioridade: ${formatPriority(task.priority)}</p>
-          <button type="button" class="btn btn-light btn-sm float-end check"><img src="assets/images/check.png" alt="check" width="20"></button>
+          <button type="button" class="btn btn-sm float-end check"><i class="bi bi-check"></i></button>
         </div>
-      </div>`
+      </div>` + contentDoing;
     }
 
     if (task.status == 2) {
-      contentDone += `<div class="card task">
+      contentDone = `<div class="card task">
           <div class="card-body task-body border-5 border-start border-success rounded-start-2">
-            <button type="button" class="btn btn-light btn-sm float-end m-1 rounded-circle" onclick="deleteConfirm(${task.id})"><img src="assets/images/excluir.png" alt="excluir" width="15"></button>
-            <button type="button" class="btn btn-light btn-sm float-end m-1 rounded-circle"><img src="assets/images/editar.png" alt="editar" width="15"></button>
+            <button type="button" class="btn btn-sm float-end m-1 rounded-circle" onclick="deleteConfirm(${task.id})"><i class="bi bi-trash" title="Excluir"></i></button>
+            <button type="button" class="btn btn-sm float-end m-1 rounded-circle btn-editar" onclick="showTask(${task.id}, '${task.title}', '${task.description}','${task.start}','${task.priority}', ${task.status}, '${task.late}')"><i class="bi bi-pencil" title="Editar"></i></button>
             <span class="id d-none" id="task${task.id}">${task.id}</span>
             <h5 class="card-title">${task.title}</h5>
             <p class="card-text">${task.description}</p>
@@ -138,7 +157,7 @@ function showtasks(tasks) {
             <p class="card-text priority">Prioridade: ${formatPriority(task.priority)}</p>
             <p class="float-end m-0 text-success task-status-completed">Tarefa completa!</p>
           </div>
-        </div>`
+        </div>` + contentDone;
     }
 
   })
@@ -193,16 +212,28 @@ new Sortable(todo, {
       const droppedTask = evt.item;
       const taskId = droppedTask.querySelector('.id').innerText;
       const taskBody = droppedTask.querySelector('.task-body');
-      taskBody.innerHTML += `<button type="button" class="btn btn-light btn-sm float-end start">➔</button>`;
+      taskBody.innerHTML += `<button type="button" class="btn btn-light btn-sm float-end start"><i class="bi bi-play"></i></button>`;
       addStartButtonListener();
+      var btnEditar = droppedTask.querySelector('.btn-editar');
+      var eClick = btnEditar.onclick.toString().match(/showTask\([^)]*\)/)[0];
+      let taskArray = eClick.split(',');
+      taskArray[taskArray.length - 2] = ` 0`;
+      let modifiedOnclick = taskArray.join(',');
+      btnEditar.setAttribute('onclick', modifiedOnclick);
       updateStatus(taskId, 0);
     }
     if (evt.to === doing) {
       const droppedTask = evt.item;
       const taskId = droppedTask.querySelector('.id').innerText;
       const taskBody = droppedTask.querySelector('.task-body');
-      taskBody.innerHTML += `<button type="button" class="btn btn-light btn-sm float-end check"><img src="assets/images/check.png" alt="check" width="20"></button>`;
+      taskBody.innerHTML += `<button type="button" class="btn btn-light btn-sm float-end check"><i class="bi bi-check"></i></button>`;
       addCheckButtonListener();
+      var btnEditar = droppedTask.querySelector('.btn-editar');
+      var eClick = btnEditar.onclick.toString().match(/showTask\([^)]*\)/)[0];
+      let taskArray = eClick.split(',');
+      taskArray[taskArray.length - 2] = ` 1`;
+      let modifiedOnclick = taskArray.join(',');
+      btnEditar.setAttribute('onclick', modifiedOnclick);
       updateStatus(taskId, 1);
     }
     if (evt.to === done) {
@@ -212,6 +243,12 @@ new Sortable(todo, {
       taskBody.classList.remove('border-danger-subtle', 'border-warning-subtle', 'border-success-subtle', 'border-start', 'rounded-start-2', 'border-5');
       taskBody.classList.add("border-5", "border-start", "border-success", "rounded-start-2");
       taskBody.innerHTML += `<p class="float-end m-0 text-success task-status-completed">Tarefa completa!</p>`;
+      var btnEditar = droppedTask.querySelector('.btn-editar');
+      var eClick = btnEditar.onclick.toString().match(/showTask\([^)]*\)/)[0];
+      let taskArray = eClick.split(',');
+      taskArray[taskArray.length - 2] = ` 2`;
+      let modifiedOnclick = taskArray.join(',');
+      btnEditar.setAttribute('onclick', modifiedOnclick);
       updateStatus(taskId, 2);
     }
   }
@@ -235,16 +272,28 @@ new Sortable(doing, {
       const droppedTask = evt.item;
       const taskId = droppedTask.querySelector('.id').innerText;
       const taskBody = droppedTask.querySelector('.task-body');
-      taskBody.innerHTML += `<button type="button" class="btn btn-light btn-sm float-end start">➔</button>`;
+      taskBody.innerHTML += `<button type="button" class="btn btn-light btn-sm float-end start"><i class="bi bi-play"></i></button>`;
       addStartButtonListener();
+      var btnEditar = droppedTask.querySelector('.btn-editar');
+      var eClick = btnEditar.onclick.toString().match(/showTask\([^)]*\)/)[0];
+      let taskArray = eClick.split(',');
+      taskArray[taskArray.length - 2] = ` 0`;
+      let modifiedOnclick = taskArray.join(',');
+      btnEditar.setAttribute('onclick', modifiedOnclick);
       updateStatus(taskId, 0);
     }
     if (evt.to === doing) {
       const droppedTask = evt.item;
       const taskId = droppedTask.querySelector('.id').innerText;
       const taskBody = droppedTask.querySelector('.task-body');
-      taskBody.innerHTML += `<button type="button" class="btn btn-light btn-sm float-end check"><img src="assets/images/check.png" alt="check" width="20"></button>`;
+      taskBody.innerHTML += `<button type="button" class="btn btn-light btn-sm float-end check"><i class="bi bi-check"></i></button>`;
       addCheckButtonListener();
+      var btnEditar = droppedTask.querySelector('.btn-editar');
+      var eClick = btnEditar.onclick.toString().match(/showTask\([^)]*\)/)[0];
+      let taskArray = eClick.split(',');
+      taskArray[taskArray.length - 2] = ` 1`;
+      let modifiedOnclick = taskArray.join(',');
+      btnEditar.setAttribute('onclick', modifiedOnclick);
       updateStatus(taskId, 1);
     }
     if (evt.to === done) {
@@ -254,6 +303,12 @@ new Sortable(doing, {
       taskBody.classList.remove('border-danger-subtle', 'border-warning-subtle', 'border-success-subtle', 'border-start', 'rounded-start-2', 'border-5');
       taskBody.classList.add("border-5", "border-start", "border-success", "rounded-start-2");
       taskBody.innerHTML += `<p class="float-end m-0 text-success task-status-completed">Tarefa completa!</p>`;
+      var btnEditar = droppedTask.querySelector('.btn-editar');
+      var eClick = btnEditar.onclick.toString().match(/showTask\([^)]*\)/)[0];
+      let taskArray = eClick.split(',');
+      taskArray[taskArray.length - 2] = ` 2`;
+      let modifiedOnclick = taskArray.join(',');
+      btnEditar.setAttribute('onclick', modifiedOnclick);
       updateStatus(taskId, 2);
     }
   }
@@ -289,8 +344,14 @@ new Sortable(done, {
       else if (priority === "Prioridade: ALTA") {
         taskBody.classList.add("border-start", "rounded-start-2", "border-5", "border-danger-subtle");
       }
-      taskBody.innerHTML += `<button type="button" class="btn btn-light btn-sm float-end start">➔</button>`;
+      taskBody.innerHTML += `<button type="button" class="btn btn-light btn-sm float-end start"><i class="bi bi-play"></i></button>`;
       addStartButtonListener();
+      var btnEditar = droppedTask.querySelector('.btn-editar');
+      var eClick = btnEditar.onclick.toString().match(/showTask\([^)]*\)/)[0];
+      let taskArray = eClick.split(',');
+      taskArray[taskArray.length - 2] = ` 0`;
+      let modifiedOnclick = taskArray.join(',');
+      btnEditar.setAttribute('onclick', modifiedOnclick);
       updateStatus(taskId, 0);
     }
     if (evt.to === doing) {
@@ -307,8 +368,14 @@ new Sortable(done, {
       else if (priority === "Prioridade: ALTA") {
         taskBody.classList.add("border-start", "rounded-start-2", "border-5", "border-danger-subtle");
       }
-      taskBody.innerHTML += `<button type="button" class="btn btn-light btn-sm float-end check"><img src="assets/images/check.png" alt="check" width="20"></button>`;
+      taskBody.innerHTML += `<button type="button" class="btn btn-light btn-sm float-end check"><i class="bi bi-check"></i></button>`;
       addCheckButtonListener();
+      var btnEditar = droppedTask.querySelector('.btn-editar');
+      var eClick = btnEditar.onclick.toString().match(/showTask\([^)]*\)/)[0];
+      let taskArray = eClick.split(',');
+      taskArray[taskArray.length - 2] = ` 1`;
+      let modifiedOnclick = taskArray.join(',');
+      btnEditar.setAttribute('onclick', modifiedOnclick);
       updateStatus(taskId, 1);
     }
     if (evt.to === done) {
@@ -318,6 +385,12 @@ new Sortable(done, {
       taskBody.classList.remove('border-danger-subtle', 'border-warning-subtle', 'border-success-subtle', 'border-start', 'rounded-start-2', 'border-5');
       taskBody.classList.add("border-5", "border-start", "border-success", "rounded-start-2");
       taskBody.innerHTML += `<p class="float-end m-0 text-success task-status-completed">Tarefa completa!</p>`;
+      var btnEditar = droppedTask.querySelector('.btn-editar');
+      var eClick = btnEditar.onclick.toString().match(/showTask\([^)]*\)/)[0];
+      let taskArray = eClick.split(',');
+      taskArray[taskArray.length - 2] = ` 2`;
+      let modifiedOnclick = taskArray.join(',');
+      btnEditar.setAttribute('onclick', modifiedOnclick);
       updateStatus(taskId, 2);
     }
   }
@@ -735,13 +808,15 @@ btnCreateTask.addEventListener('click', event => {
         return
     }
 
+    let status = statusEditInput.value !== '' ? returnValueById('statusEditInput') : 0;
+
     let task = {
         id: 0,
-        title: returnValeuById('title'),
-        description: returnValeuById('description').replace(/(\r\n|\n|\r)/gm,""),
-        start: returnValeuById('end-date'),
-        priority: returnValeuById('priority'),
-        status: 0,
+        title: returnValueById('title'),
+        description: returnValueById('description').replace(/(\r\n|\n|\r)/gm,""),
+        start: returnValueById('end-date'),
+        priority: returnValueById('priority'),
+        status: status,
         late: false
     }
 
@@ -751,6 +826,7 @@ btnCreateTask.addEventListener('click', event => {
     $('#modalAddTask').modal('toggle')
 
     //rolar até o fim da página para mostrar a nova tarefa adicionada
+    if (document.getElementById('lista') != null)
     setTimeout(() => { 
         readTasks()
         window.scrollTo(0, document.body.scrollHeight)
@@ -761,9 +837,6 @@ btnCreateTask.addEventListener('click', event => {
 //chamar funcao de atualizar tarefa ao clicar no botao
 if(btnEditTask != null)
 btnEditTask.addEventListener('click', event => {
-
-
-    console.log('alou')
 
     event.preventDefault()
 
@@ -777,15 +850,15 @@ btnEditTask.addEventListener('click', event => {
     }
 
     let task = {
-        title: returnValeuById('titleEditInput'),
-        description: returnValeuById('descriptionEditInput').replace(/(\r\n|\n|\r)/gm,""),
-        start: returnValeuById('dateEditInput'),
-        priority: returnValeuById('priorityEditInput'),
-        status: returnValeuById('statusEditInput'),
-        late: returnValeuById('lateEditInput')
+        title: returnValueById('titleEditInput'),
+        description: returnValueById('descriptionEditInput').replace(/(\r\n|\n|\r)/gm,""),
+        start: returnValueById('dateEditInput'),
+        priority: returnValueById('priorityEditInput'),
+        status: returnValueById('statusEditInput'),
+        late: returnValueById('lateEditInput')
     }
 
-    let id = parseInt(returnValeuById('idEditInput'))
+    let id = parseInt(returnValueById('idEditInput'))
 
     updateTask(id, task)
 
@@ -793,17 +866,25 @@ btnEditTask.addEventListener('click', event => {
     $('#modalEditTask').modal('toggle')
 
     //atualizar a tabela da dados
-    setTimeout(() => { 
-        readTasks()
-    }, 2000)
+    if (document.getElementById('lista') != null) {
+      setTimeout(() => { 
+          readTasks()
+      }, 2000)
+    }
 
+    if (document.getElementById('kanban') != null) {
+      $(`#task${id}`).closest('.task').remove();
+      task.id = id;
+      showtasks([task]);
+    }
+    
 })
 
 //chamar funcao de deletar tarefa ao clicar no botao
 if(btnCreateTask != null)
 btnDeleteTask.addEventListener('click', () => {
 
-    let id = parseInt(returnValeuById('inputDeleteId'))
+    let id = parseInt(returnValueById('inputDeleteId'))
 
     deleteTask(id)
 
@@ -819,7 +900,7 @@ btnDeleteTask.addEventListener('click', () => {
 
 
 //retornar o valor de um elemento pelo id
-const returnValeuById = id => document.getElementById(id).value
+const returnValueById = id => document.getElementById(id).value
 
 //adicionar ou removar classe invalida
 function checkInputValid(input) {
@@ -928,9 +1009,11 @@ function createTask(task) {
 
     })
         .then(res => { 
-            if(res.status == 201) displaySuccsMessage('Tarefa adicionada com sucesso!') 
-            else displayErrMessage('A tarefa não foi adicionada!') 
+            if(res.status == 201) {displaySuccsMessage('Tarefa adicionada com sucesso!'); return res.json();}
+            else {displayErrMessage('A tarefa não foi adicionada!'); throw new Error('Erro ao adicionar a tarefa');}
+            
         })
+        .then(data => showtasks([data]))
         .catch(error => {
             console.error(error)
         })
@@ -1086,10 +1169,10 @@ fetch('https://json-server-web-api-tarefas.gustavoalvaren3.repl.co/tarefas')
       
         //   let task = {
         //       id: 0,
-        //       title: returnValeuById('title'),
-        //       description: returnValeuById('description').replace(/(\r\n|\n|\r)/gm,""),
-        //       start: returnValeuById('end-date'),
-        //       priority: returnValeuById('priority'),
+        //       title: returnValueById('title'),
+        //       description: returnValueById('description').replace(/(\r\n|\n|\r)/gm,""),
+        //       start: returnValueById('end-date'),
+        //       priority: returnValueById('priority'),
         //       status: 0,
         //       late: false
         //   }
