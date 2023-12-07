@@ -82,6 +82,11 @@ function addButtonListener(btn, status) {
       taskArray[taskArray.length - 2] = ` ${status}`;
       let modifiedOnclick = taskArray.join(',');
       elementoIrmaoAnterior.setAttribute('onclick', modifiedOnclick);
+      elementoIrmaoAnterior = btn.previousElementSibling;
+      while (elementoIrmaoAnterior && !elementoIrmaoAnterior.classList.contains('deadline')) {
+        elementoIrmaoAnterior = elementoIrmaoAnterior.previousElementSibling;
+      }
+      elementoIrmaoAnterior.classList.remove('text-danger');
       btn.remove();
       taskBody.innerHTML += '<p class="float-end m-0 text-success task-status-completed">Tarefa completa!</p>';
       taskContainer.remove();
@@ -125,6 +130,12 @@ function showtasks(tasks) {
       priorityClass = 'border-start rounded-start-2 border-5 border-success-subtle';
     }
 
+    let lateClass = '';
+
+    if (task.late) {
+      lateClass = 'text-danger';
+    }
+
     if (task.status == 0) {
       contentTodo = `<div class="card task">
         <div class="card-body task-body ${priorityClass}">
@@ -133,7 +144,7 @@ function showtasks(tasks) {
         <span class="id d-none" id="task${task.id}">${task.id}</span>
         <h5 class="card-title">${task.title}</h5>
           <p class="card-text">${task.description}</p>
-          <p class="card-text">Prazo: ${formatDate(task.start)}</p>
+          <p class="card-text deadline ${lateClass}">Prazo: ${formatDate(task.start)}</p>
           <p class="card-text priority">Prioridade: ${formatPriority(task.priority)}</p>
           <button type="button" class="btn btn-sm float-end start"><i class="bi bi-play"></i></button>
         </div>
@@ -148,7 +159,7 @@ function showtasks(tasks) {
         <span class="id d-none" id="task${task.id}">${task.id}</span>
         <h5 class="card-title">${task.title}</h5>
           <p class="card-text">${task.description}</p>
-          <p class="card-text">Prazo: ${formatDate(task.start)}</p>
+          <p class="card-text deadline ${lateClass}">Prazo: ${formatDate(task.start)}</p>
           <p class="card-text priority">Prioridade: ${formatPriority(task.priority)}</p>
           <button type="button" class="btn btn-sm float-end check"><i class="bi bi-check"></i></button>
         </div>
@@ -163,7 +174,7 @@ function showtasks(tasks) {
             <span class="id d-none" id="task${task.id}">${task.id}</span>
             <h5 class="card-title">${task.title}</h5>
             <p class="card-text">${task.description}</p>
-            <p class="card-text">Prazo: ${formatDate(task.start)}</p>
+            <p class="card-text deadline">Prazo: ${formatDate(task.start)}</p>
             <p class="card-text priority">Prioridade: ${formatPriority(task.priority)}</p>
             <p class="float-end m-0 text-success task-status-completed">Tarefa completa!</p>
           </div>
@@ -259,6 +270,8 @@ if (todo !== null)
         taskArray[taskArray.length - 2] = ` 2`;
         let modifiedOnclick = taskArray.join(',');
         btnEditar.setAttribute('onclick', modifiedOnclick);
+        let prazo = droppedTask.querySelector('.deadline');
+        prazo.classList.remove('text-danger');
         updateStatus(taskId, 2);
       }
     }
@@ -319,6 +332,8 @@ if (doing !== null)
         taskArray[taskArray.length - 2] = ` 2`;
         let modifiedOnclick = taskArray.join(',');
         btnEditar.setAttribute('onclick', modifiedOnclick);
+        let prazo = droppedTask.querySelector('.deadline');
+        prazo.classList.remove('text-danger');
         updateStatus(taskId, 2);
       }
     }
@@ -401,6 +416,8 @@ if (done !== null)
         taskArray[taskArray.length - 2] = ` 2`;
         let modifiedOnclick = taskArray.join(',');
         btnEditar.setAttribute('onclick', modifiedOnclick);
+        let prazo = droppedTask.querySelector('.deadline');
+        prazo.classList.remove('text-danger');
         updateStatus(taskId, 2);
       }
     }
