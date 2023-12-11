@@ -16,5 +16,4 @@ O Organizaí é a ferramenta perfeita para estudantes universitários que buscam
 * Rommel Vieira Carneiro 
 
 ## Instruções de utilização
-
-Assim que a primeira versão do sistema estiver disponível, deverá complementar com as instruções de utilização. Descreva como instalar eventuais dependências e como executar a aplicação.
+Baixar o zip desse repositório, acessar a pasta "Codigo" e abrir o arquivo index.html
