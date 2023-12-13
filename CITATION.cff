@@ -31,33 +31,31 @@ date-released: 2023-12-13
 =======
 cff-version: 1.0.1
 message: Please cite this software using these metadata.
-title: 
+title: OrganizAi
 authors:
-  - family-names: 
-    given-names: 
-  - family-names: 
-    given-names: 
-  - family-names: 
-    given-names: 
-  - family-names: 
-    given-names: 
-  - family-names: 
-    given-names: 
-  - family-names: 
-    given-names:
+  - family-names: Leôncio Jales
+    given-names: André
+  - family-names: Alvarenga Ribeiro Carvalho
+    given-names: Gustavo
+  - family-names: Pereira Felix
+    given-names: Gustavo
+  - family-names: Evangelista do Nascimento
+    given-names: Mateus
   - name-suffix: Professor
     affiliation: PUC Minas
-    family-names: 
-    given-names: 
+    family-names: de Castro Belém
+    given-names: Felipe
   - name-suffix: Professor
     affiliation: PUC Minas
-    family-names: 
-    given-names: 
+    family-names: Vieira Carneiro
+    given-names: Rommel
 keywords:
-  - 
-  - 
-repository-code: 
+  - Organização
+  - Tarefas
+  - Universitários
+  - Procrastinação
+repository-code: https://github.com/ICEI-PUC-Minas-PMGCC-TI/ti-1-pmg-cc-t-20232-g2-organizacao-pessoal
 license: CC-BY-4.0
 version: 1.0.0
-date-released: 2022-07-14
+date-released: 2023-12-13
 >>>>>>> 576e4073eb686b7caee5801aac8f95491eb4d605
