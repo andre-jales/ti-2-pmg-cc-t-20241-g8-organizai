@@ -2,7 +2,7 @@
 let tarefas = [];
 
 // Fetching dos dados da API usando a URL fornecida 
-const apiURL = 'https://json-server-web-api-tarefas.gustavoalvaren3.repl.co/tarefas';
+const apiURL = 'https://replit.com/@MateusADM/Json-Server-Web-API#data.json';
 const todo = document.getElementById('to-do');
 const doing = document.getElementById('doing');
 const done = document.getElementById('done');
@@ -35,7 +35,7 @@ function formatPriority(priority) {
 
 
 function updateStatus(taskId, updatedStatus) {
-  fetch(`https://json-server-web-api-tarefas.gustavoalvaren3.repl.co/tarefas/${taskId}`, {
+  fetch(`https://replit.com/@MateusADM/Json-Server-Web-API#data.json/${taskId}`, {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json',
@@ -1087,7 +1087,7 @@ function deleteTask(id) {
 
 
 if (document.getElementById('calendar') != null)
-  fetch('https://json-server-web-api-tarefas.gustavoalvaren3.repl.co/tarefas')
+  fetch('https://replit.com/@MateusADM/Json-Server-Web-API#data.json')
     .then(response => response.json()) // Converte a resposta para JSON
     .then(data => {
       tarefas = data; // Armazena os dados da resposta na array de tarefas
@@ -1113,7 +1113,7 @@ if (document.getElementById('calendar') != null)
             };
 
 
-            fetch(`https://json-server-web-api-tarefas.gustavoalvaren3.repl.co/tarefas/${evento.id}`, {
+            fetch(`https://replit.com/@MateusADM/Json-Server-Web-API#data.json/${evento.id}`, {
               method: 'PATCH',
               headers: {
                 'Content-Type': 'application/json',
@@ -1145,7 +1145,7 @@ if (document.getElementById('calendar') != null)
                 };
 
 
-                fetch(`https://json-server-web-api-tarefas.gustavoalvaren3.repl.co/tarefas/${event.id}`, {
+                fetch(`https://replit.com/@MateusADM/Json-Server-Web-API#data.json/${event.id}`, {
                   method: 'PATCH',
                   headers: {
                     'Content-Type': 'application/json',
@@ -1159,7 +1159,7 @@ if (document.getElementById('calendar') != null)
               };
 
 
-              fetch(`https://json-server-web-api-tarefas.gustavoalvaren3.repl.co/tarefas/${event.id}`, {
+              fetch(`https://replit.com/@MateusADM/Json-Server-Web-API#data.json/${event.id}`, {
                 method: 'PATCH',
                 headers: {
                   'Content-Type': 'application/json',

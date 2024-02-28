@@ -170,7 +170,7 @@ function deleteConfirm(id) {
 }
 
 //CRUD lembrete no json server
-const apiUrl = 'https://json-server-web-api-tarefas.gustavoalvaren3.repl.co/lembretes'
+const apiUrl = 'https://replit.com/@MateusADM/Json-Server-Web-API#data.json'
 
 function createReminder(reminder) {
     fetch(apiUrl, {
