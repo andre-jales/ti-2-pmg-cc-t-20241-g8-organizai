@@ -19,61 +19,24 @@
     <div id="msg">
 
     </div>
-    <nav class="navbar navbar-dark">
-        <div class="container-fluid">
-            <a class="navbar-brand text-white" href="index.html">OrganizAí</a>
-            <div id="Pomodoro">
-                <button id="notifications" class="start-button">Notificações</button>
-                <button id="configure" class="start-button">Configurar</button>
-                <button id="startButton" class="start-button">Começar</button>
-                <button disabled class="start-button" id="cronometro">00:00</button>
-            </div>
-
-            <div id="popup" class="popup">
-                <div class="popup-header">Inserir Dados</div>
-                <input type="number" id="tempoAtividade" placeholder="Tempo de Atividade (minutos)">
-                <input type="number" id="tempoIntervalo" placeholder="Tempo de Intervalo (minutos)">
-                <input type="number" id="numRepeticoes" placeholder="Número de Repetições">
-                <button id="submitButton" class="submit-button">Salvar e Fechar</button>
-            </div>
-
-
-
-            <div id="popupNot" class="popupnotif">
-                <div class="popup-header">Gerenciar Notificações</div>
-                <label>
-                    <input type="checkbox" id="configurarNotificacoes"> Notificação do Browser
-                </label><br>
-                <label>
-                    <input type="checkbox" id="toggleNotifications"> Notificação Pop-up
-                </label><br>
-                <br><br>
-                <div class="popup-header">Tempo dos lembretes</div>
-                <label>
-                    <input type="checkbox" id="notifinit"> Notificação Antes de iniciar
-                </label><br>
-                <label>
-                    <input type="checkbox" id="notifinter"> Notificação no Intervalo
-                </label><br> <label>
-                    <input type="checkbox" id="notifativ"> Notificação na Atividade
-                </label><br>
-
-                <br> <button id="submitButtonnot" class="submit-button">Salvar e Fechar</button>
-            </div>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
-                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                <div class="navbar-nav">
-                    <a class="nav-link active text-white" aria-current="page" href="index.html">Home</a>
-                    <a class="nav-link text-white" href="pages/links.html">URLs interessantes</a>
-                    <a class="nav-link text-white" href="pages/lista.html">Tarefas em lista</a>
-                    <a class="nav-link text-white" href="pages/lembretes.html">Gerenciar lembretes</a>
+    <header>
+        <nav class="navbar navbar-dark navbar-expand-lg">
+            <div class="container-fluid">
+                <a class="navbar-brand text-white" href="index.html">OrganizAí</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                    <div class="navbar-nav">
+                        <a class="nav-link active text-white" aria-current="page" href="index.html">Home</a>
+                        <a class="nav-link text-white" href="pages/links.html">URLs interessantes</a>
+                        <a class="nav-link text-white" href="pages/lista.html">Tarefas em lista</a>
+                        <a class="nav-link text-white" href="pages/lembretes.html">Gerenciar lembretes</a>
+                    </div>
                 </div>
             </div>
-        </div>
-    </nav>
+        </nav>
+    </header>
 
     <div class="p-5">
         <div class="card">
