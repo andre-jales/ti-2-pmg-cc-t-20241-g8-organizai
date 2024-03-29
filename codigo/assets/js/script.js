@@ -1,51 +1,188 @@
-// Declaração de uma array vazia para armazenar as tarefas
-let tarefas = [];
+// Declaração das tarefas e lembretes
+const tarefas = [
+  {
+    "id": 1,
+    "title": "Reunião com cliente",
+    "description": "Discutir os detalhes do novo projeto com cliente",
+    "start": "2023-09-06T09:00:00",
+    "end": "2023-09-06T11:00:00",
+    "priority": "high",
+    "status": 2,
+    "late": true
+  },
+  {
+    "id": 2,
+    "title": "Desenvolvimento de Software",
+    "description": "Trabalhar no desenvolvimento de novas funcionalidades.",
+    "start": "2023-09-05T09:00:00",
+    "end": "2023-09-05T11:00:00",
+    "priority": "mid",
+    "status": 1,
+    "late": true
+  },
+  {
+    "id": 3,
+    "title": "Revisão de Código",
+    "description": "Revisar o código para garantir qualidade e segurança.",
+    "start": "2023-09-12T11:00:00",
+    "end": "2023-09-12T13:00:00",
+    "priority": "high",
+    "status": 0,
+    "late": true
+  },
+  {
+    "id": 4,
+    "title": "Entrevista de Emprego",
+    "description": "Realizar entrevista com candidato para posição de desenvolvedor.",
+    "start": "2023-09-15T15:30:00",
+    "end": "2023-09-15T17:30:00",
+    "priority": "mid",
+    "status": 0,
+    "late": true
+  },
+  {
+    "id": 5,
+    "title": "Treinamento da Equipe",
+    "description": "Conduzir treinamento sobre novas tecnologias para a equipe.",
+    "start": "2023-09-20T10:00:00",
+    "end": "2023-09-20T12:00:00",
+    "priority": "low",
+    "status": 1,
+    "late": true
+  },
+  {
+    "id": 6,
+    "title": "Apresentação de Vendas",
+    "description": "Preparar e realizar apresentação de vendas para clientes.",
+    "start": "2023-09-25T14:30:00",
+    "end": "2023-09-25T16:30:00",
+    "priority": "high",
+    "status": 1,
+    "late": true
+  },
+  {
+    "id": 7,
+    "title": "Manutenção de Sistemas",
+    "description": "Realizar manutenção preventiva nos sistemas da empresa.",
+    "start": "2023-09-28T09:00:00",
+    "end": "2023-09-28T11:00:00",
+    "priority": "mid",
+    "status": 0,
+    "late": true
+  },
+  {
+    "id": 8,
+    "title": "Entrega de Relatório",
+    "description": "Finalizar e entregar relatório mensal aos superiores.",
+    "start": "2023-10-05T16:00:00",
+    "end": "2023-10-05T18:00:00",
+    "priority": "low",
+    "status": 2,
+    "late": true
+  },
+  {
+    "id": 9,
+    "title": "Planejamento Estratégico",
+    "description": "Participar de reunião para discutir o planejamento estratégico da empresa.",
+    "start": "2023-10-08T11:30:00",
+    "end": "2023-10-08T13:30:00",
+    "priority": "high",
+    "status": 0,
+    "late": true
+  }
+];
+let proximoIdTarefa = 10;
 
-// Fetching dos dados da API usando a URL fornecida 
-const apiURL = 'https://replit.com/@MateusADM/Json-Server-Web-API#data.json';
+const lembretes = [
+  {
+    "title": "Lembrete 1",
+    "content": "Desligar o celular antes de começar",
+    "id": 1
+  },
+  {
+    "title": "Lembrete 2",
+    "content": "Pegar uma garrafa de água",
+    "id": 2
+  },
+  {
+    "id": 3,
+    "title": "Corrigir trabalhos",
+    "content": "Corrigir trabalhos."
+  }
+];
+let proximoIdLembrete = 4;
+
 const todo = document.getElementById('to-do');
 const doing = document.getElementById('doing');
 const done = document.getElementById('done');
+const formAddTask = document.getElementById('formAddTask');
+const formEditTask = document.getElementById('formEditTask');
+const btnCreateTask = document.getElementById('btnCreateTask');
+const btnEditTask = document.getElementById('btnEditTask');
+const btnDeleteTask = document.getElementById('btnDeleteTask');
+const titleInput = document.getElementById('title');
+const descriptionInput = document.getElementById('description');
+const dateInput = document.getElementById('end-date');
+const priorityInput = document.getElementById('priority');
+const idEditInput = document.getElementById('idEditInput');
+const titleEditInput = document.getElementById('titleEditInput');
+const descriptionEditInput = document.getElementById('descriptionEditInput');
+const dateEditInput = document.getElementById('dateEditInput');
+const priorityEditInput = document.getElementById('priorityEditInput');
+const statusEditInput = document.getElementById('statusEditInput');
+const lateEditInput = document.getElementById('lateEditInput');
+const deleteId = document.getElementById('inputDeleteId');
 
+function createTask(task) {
+  tarefas.push({"id": proximoIdTarefa, ...task });
+  proximoIdTarefa++;
+}
+
+function updateTask(id, task) {
+  const index = tarefas.findIndex(tarefa => tarefa.id == id);
+  tarefas[index] = {id: id, ...task};
+}
+
+function deleteTask(id) {
+  const index = tarefas.findIndex(tarefa => tarefa.id === id);
+  tarefas.splice(index, 1);
+}
+
+function updateStatus(taskId, updatedStatus) {
+  const index = tarefas.findIndex(tarefa => tarefa.id == taskId);
+  tarefas[index].status = updatedStatus;
+}
 
 function formatDate(dateValue) {
 
-  let date = new Date(dateValue) 
+  let date = new Date(dateValue);
+  let month, day; 
 
   if (date.getMonth() + 1 < 10) {
-    var month = `0${date.getMonth() + 1}`;
+    month = `0${date.getMonth() + 1}`;
   } else {
-    var month = `${date.getMonth() + 1}`;
+    month = `${date.getMonth() + 1}`;
   }
   
   if (date.getDate() < 10) {
-    var day = `0${date.getDate()}`;
+    day = `0${date.getDate()}`;
   } else {
-    var day = `${date.getDate()}`;
+    day = `${date.getDate()}`;
   }
 
   return `${day}/${month}/${date.getFullYear()}`;
+}
+
+function formatStatus(status) {
+  if (status == 0) return 'To-Do'
+  else if (status == 1) return 'Doing'
+  else if (status == 2) return 'Done'
 }
 
 function formatPriority(priority) {
   if (priority == 'high') return 'ALTA';
   else if (priority == 'mid') return 'MÉDIA';
   else if (priority == 'low') return 'BAIXA';
-}
-
-
-function updateStatus(taskId, updatedStatus) {
-  fetch(`https://replit.com/@MateusADM/Json-Server-Web-API#data.json/${taskId}`, {
-    method: 'PATCH',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ status: updatedStatus }),
-  })
-    .then(response => response.json())
-    .catch(error => {
-      console.error('Erro ao atualizar o status da tarefa:', error);
-    });
 }
 
 function addButtonListener(btn, status) {
@@ -57,11 +194,11 @@ function addButtonListener(btn, status) {
       btn.innerHTML = '<i class="bi bi-check"></i>';
       btn.classList.add("check");
       btn.classList.remove("start");
-      var elementoIrmaoAnterior = btn.previousElementSibling;
+      let elementoIrmaoAnterior = btn.previousElementSibling;
       while (elementoIrmaoAnterior && !elementoIrmaoAnterior.classList.contains('btn-editar')) {
         elementoIrmaoAnterior = elementoIrmaoAnterior.previousElementSibling;
       }
-      var eClick = elementoIrmaoAnterior.onclick.toString().match(/showTask\([^)]*\)/)[0];
+      let eClick = elementoIrmaoAnterior.onclick.toString().match(/showTask\([^)]*\)/)[0];
       let taskArray = eClick.split(',');
       taskArray[taskArray.length - 2] = ` ${status}`;
       let modifiedOnclick = taskArray.join(',');
@@ -73,11 +210,11 @@ function addButtonListener(btn, status) {
       const taskBody = taskContainer.querySelector('.task-body');
       taskBody.classList.remove('border-danger-subtle', 'border-warning-subtle', 'border-success-subtle', 'border-start', 'rounded-start-2', 'border-5');
       taskBody.classList.add("border-5", "border-start", "border-success", "rounded-start-2");
-      var elementoIrmaoAnterior = btn.previousElementSibling;
+      let elementoIrmaoAnterior = btn.previousElementSibling;
       while (elementoIrmaoAnterior && !elementoIrmaoAnterior.classList.contains('btn-editar')) {
         elementoIrmaoAnterior = elementoIrmaoAnterior.previousElementSibling;
       }
-      var eClick = elementoIrmaoAnterior.onclick.toString().match(/showTask\([^)]*\)/)[0];
+      let eClick = elementoIrmaoAnterior.onclick.toString().match(/showTask\([^)]*\)/)[0];
       let taskArray = eClick.split(',');
       taskArray[taskArray.length - 2] = ` ${status}`;
       let modifiedOnclick = taskArray.join(',');
@@ -112,76 +249,73 @@ function addCheckButtonListener() {
   });
 }
 
-function showtasks(tasks) {
+function showTaskInKanban(task) {
   const table = document.getElementById('tasksTable');
   let contentTodo = '';
   let contentDoing = '';
   let contentDone = '';
 
-  tasks.forEach(task => {
+  let priorityClass = '';
 
-    let priorityClass = '';
+  if (task.priority === 'high') {
+    priorityClass = 'border-start rounded-start-2 border-5 border-danger-subtle';
+  } else if (task.priority === 'mid') {
+    priorityClass = 'border-start rounded-start-2 border-5 border-warning-subtle';
+  } else if (task.priority === 'low') {
+    priorityClass = 'border-start rounded-start-2 border-5 border-success-subtle';
+  }
 
-    if (task.priority === 'high') {
-      priorityClass = 'border-start rounded-start-2 border-5 border-danger-subtle';
-    } else if (task.priority === 'mid') {
-      priorityClass = 'border-start rounded-start-2 border-5 border-warning-subtle';
-    } else if (task.priority === 'low') {
-      priorityClass = 'border-start rounded-start-2 border-5 border-success-subtle';
-    }
+  let lateClass = '';
 
-    let lateClass = '';
+  if (task.late) {
+    lateClass = 'text-danger';
+  }
 
-    if (task.late) {
-      lateClass = 'text-danger';
-    }
+  if (task.status == 0) {
+    contentTodo = `<div class="card task">
+      <div class="card-body task-body ${priorityClass}">
+      <button type="button" class="btn btn-sm float-end m-1 rounded-circle" onclick="deleteConfirm(${task.id})"><i class="bi bi-trash" title="Excluir"></i></button>
+      <button type="button" class="btn btn-sm float-end m-1 rounded-circle btn-editar" onclick="showTask(${task.id}, '${task.title}', '${task.description}','${task.start}','${task.priority}', ${task.status}, '${task.late}')"><i class="bi bi-pencil" title="Editar"></i></button>
+      <span class="id d-none" id="task${task.id}">${task.id}</span>
+      <h5 class="card-title">${task.title}</h5>
+        <p class="card-text">${task.description}</p>
+        <p class="card-text deadline ${lateClass}">Prazo: ${formatDate(task.start)}</p>
+        <p class="card-text priority">Prioridade: ${formatPriority(task.priority)}</p>
+        <button type="button" class="btn btn-sm float-end start"><i class="bi bi-play"></i></button>
+      </div>
+    </div>` + contentTodo;
+  }
 
-    if (task.status == 0) {
-      contentTodo = `<div class="card task">
-        <div class="card-body task-body ${priorityClass}">
-        <button type="button" class="btn btn-sm float-end m-1 rounded-circle" onclick="deleteConfirm(${task.id})"><i class="bi bi-trash" title="Excluir"></i></button>
-        <button type="button" class="btn btn-sm float-end m-1 rounded-circle btn-editar" onclick="showTask(${task.id}, '${task.title}', '${task.description}','${task.start}','${task.priority}', ${task.status}, '${task.late}')"><i class="bi bi-pencil" title="Editar"></i></button>
-        <span class="id d-none" id="task${task.id}">${task.id}</span>
-        <h5 class="card-title">${task.title}</h5>
+  if (task.status == 1) {
+    contentDoing = `<div class="card task">
+      <div class="card-body task-body ${priorityClass}">
+      <button type="button" class="btn btn-sm float-end m-1 rounded-circle" onclick="deleteConfirm(${task.id})"><i class="bi bi-trash" title="Excluir"></i></button>
+      <button type="button" class="btn btn-sm float-end m-1 rounded-circle btn-editar" onclick="showTask(${task.id}, '${task.title}', '${task.description}','${task.start}','${task.priority}', ${task.status}, '${task.late}')"><i class="bi bi-pencil" title="Editar"></i></button>
+      <span class="id d-none" id="task${task.id}">${task.id}</span>
+      <h5 class="card-title">${task.title}</h5>
+        <p class="card-text">${task.description}</p>
+        <p class="card-text deadline ${lateClass}">Prazo: ${formatDate(task.start)}</p>
+        <p class="card-text priority">Prioridade: ${formatPriority(task.priority)}</p>
+        <button type="button" class="btn btn-sm float-end check"><i class="bi bi-check"></i></button>
+      </div>
+    </div>` + contentDoing;
+  }
+
+  if (task.status == 2) {
+    contentDone = `<div class="card task">
+        <div class="card-body task-body border-5 border-start border-success rounded-start-2">
+          <button type="button" class="btn btn-sm float-end m-1 rounded-circle" onclick="deleteConfirm(${task.id})"><i class="bi bi-trash" title="Excluir"></i></button>
+          <button type="button" class="btn btn-sm float-end m-1 rounded-circle btn-editar" onclick="showTask(${task.id}, '${task.title}', '${task.description}','${task.start}','${task.priority}', ${task.status}, '${task.late}')"><i class="bi bi-pencil" title="Editar"></i></button>
+          <span class="id d-none" id="task${task.id}">${task.id}</span>
+          <h5 class="card-title">${task.title}</h5>
           <p class="card-text">${task.description}</p>
-          <p class="card-text deadline ${lateClass}">Prazo: ${formatDate(task.start)}</p>
+          <p class="card-text deadline">Prazo: ${formatDate(task.start)}</p>
           <p class="card-text priority">Prioridade: ${formatPriority(task.priority)}</p>
-          <button type="button" class="btn btn-sm float-end start"><i class="bi bi-play"></i></button>
+          <p class="float-end m-0 text-success task-status-completed">Tarefa completa!</p>
         </div>
-      </div>` + contentTodo;
-    }
+      </div>` + contentDone;
+  }
 
-    if (task.status == 1) {
-      contentDoing = `<div class="card task">
-        <div class="card-body task-body ${priorityClass}">
-        <button type="button" class="btn btn-sm float-end m-1 rounded-circle" onclick="deleteConfirm(${task.id})"><i class="bi bi-trash" title="Excluir"></i></button>
-        <button type="button" class="btn btn-sm float-end m-1 rounded-circle btn-editar" onclick="showTask(${task.id}, '${task.title}', '${task.description}','${task.start}','${task.priority}', ${task.status}, '${task.late}')"><i class="bi bi-pencil" title="Editar"></i></button>
-        <span class="id d-none" id="task${task.id}">${task.id}</span>
-        <h5 class="card-title">${task.title}</h5>
-          <p class="card-text">${task.description}</p>
-          <p class="card-text deadline ${lateClass}">Prazo: ${formatDate(task.start)}</p>
-          <p class="card-text priority">Prioridade: ${formatPriority(task.priority)}</p>
-          <button type="button" class="btn btn-sm float-end check"><i class="bi bi-check"></i></button>
-        </div>
-      </div>` + contentDoing;
-    }
-
-    if (task.status == 2) {
-      contentDone = `<div class="card task">
-          <div class="card-body task-body border-5 border-start border-success rounded-start-2">
-            <button type="button" class="btn btn-sm float-end m-1 rounded-circle" onclick="deleteConfirm(${task.id})"><i class="bi bi-trash" title="Excluir"></i></button>
-            <button type="button" class="btn btn-sm float-end m-1 rounded-circle btn-editar" onclick="showTask(${task.id}, '${task.title}', '${task.description}','${task.start}','${task.priority}', ${task.status}, '${task.late}')"><i class="bi bi-pencil" title="Editar"></i></button>
-            <span class="id d-none" id="task${task.id}">${task.id}</span>
-            <h5 class="card-title">${task.title}</h5>
-            <p class="card-text">${task.description}</p>
-            <p class="card-text deadline">Prazo: ${formatDate(task.start)}</p>
-            <p class="card-text priority">Prioridade: ${formatPriority(task.priority)}</p>
-            <p class="float-end m-0 text-success task-status-completed">Tarefa completa!</p>
-          </div>
-        </div>` + contentDone;
-    }
-
-  })
   if (todo !== null) {
     todo.innerHTML = contentTodo + todo.innerHTML;
     doing.innerHTML = contentDoing + doing.innerHTML;
@@ -190,787 +324,14 @@ function showtasks(tasks) {
 
   addStartButtonListener();
   addCheckButtonListener();
-
 }
 
-function readtasks() {
-  fetch(apiURL, {
-    method: 'GET',
-    headers: { 'Content-Type': 'application/JSON' }
-  })
-    .then(res => res.json())
-    .then(data => showtasks(data))
-    .catch(error => {
-      console.error(error)
-    });
-}
-
-readtasks();
-
-if (document.querySelector('.linha-kanban') !== null)
-  new Sortable(document.querySelector('.linha-kanban'), {
-    animation: 250,
-    draggable: '.coluna-kanban',
-    delayOnTouchOnly: true,
-    handle: '.colummn-header'
-  })
-
-if (todo !== null)
-  new Sortable(todo, {
-    group: 'shared',
-    animation: 300,
-    delayOnTouchOnly: true,
-    delay: 100,
-    dragClass: "sortable-drag",
-    ghostClass: "sortable-ghost",
-    onStart: function (evt) {
-      const draggedTask = evt.item;
-      const btnStart = draggedTask.querySelector('.start');
-      btnStart.remove();
-    },
-    onEnd: function (evt) {
-      if (evt.to === todo) {
-        const droppedTask = evt.item;
-        const taskId = droppedTask.querySelector('.id').innerText;
-        const taskBody = droppedTask.querySelector('.task-body');
-        taskBody.innerHTML += `<button type="button" class="btn btn-light btn-sm float-end start"><i class="bi bi-play"></i></button>`;
-        addStartButtonListener();
-        var btnEditar = droppedTask.querySelector('.btn-editar');
-        var eClick = btnEditar.onclick.toString().match(/showTask\([^)]*\)/)[0];
-        let taskArray = eClick.split(',');
-        taskArray[taskArray.length - 2] = ` 0`;
-        let modifiedOnclick = taskArray.join(',');
-        btnEditar.setAttribute('onclick', modifiedOnclick);
-        updateStatus(taskId, 0);
-      }
-      if (evt.to === doing) {
-        const droppedTask = evt.item;
-        const taskId = droppedTask.querySelector('.id').innerText;
-        const taskBody = droppedTask.querySelector('.task-body');
-        taskBody.innerHTML += `<button type="button" class="btn btn-light btn-sm float-end check"><i class="bi bi-check"></i></button>`;
-        addCheckButtonListener();
-        var btnEditar = droppedTask.querySelector('.btn-editar');
-        var eClick = btnEditar.onclick.toString().match(/showTask\([^)]*\)/)[0];
-        let taskArray = eClick.split(',');
-        taskArray[taskArray.length - 2] = ` 1`;
-        let modifiedOnclick = taskArray.join(',');
-        btnEditar.setAttribute('onclick', modifiedOnclick);
-        updateStatus(taskId, 1);
-      }
-      if (evt.to === done) {
-        const droppedTask = evt.item;
-        const taskId = droppedTask.querySelector('.id').innerText;
-        const taskBody = droppedTask.querySelector('.task-body');
-        taskBody.classList.remove('border-danger-subtle', 'border-warning-subtle', 'border-success-subtle', 'border-start', 'rounded-start-2', 'border-5');
-        taskBody.classList.add("border-5", "border-start", "border-success", "rounded-start-2");
-        taskBody.innerHTML += `<p class="float-end m-0 text-success task-status-completed">Tarefa completa!</p>`;
-        var btnEditar = droppedTask.querySelector('.btn-editar');
-        var eClick = btnEditar.onclick.toString().match(/showTask\([^)]*\)/)[0];
-        let taskArray = eClick.split(',');
-        taskArray[taskArray.length - 2] = ` 2`;
-        let modifiedOnclick = taskArray.join(',');
-        btnEditar.setAttribute('onclick', modifiedOnclick);
-        let prazo = droppedTask.querySelector('.deadline');
-        prazo.classList.remove('text-danger');
-        updateStatus(taskId, 2);
-      }
-    }
-  });
-
-if (doing !== null)
-  new Sortable(doing, {
-    group: 'shared',
-    animation: 300,
-    delayOnTouchOnly: true,
-    delay: 100,
-    dragClass: "sortable-drag",
-    ghostClass: "sortable-ghost",
-    onStart: function (evt) {
-      const draggedTask = evt.item;
-      const btnCheck = draggedTask.querySelector('.check');
-      btnCheck.remove();
-    },
-    onEnd: function (evt) {
-      if (evt.to === todo) {
-        const droppedTask = evt.item;
-        const taskId = droppedTask.querySelector('.id').innerText;
-        const taskBody = droppedTask.querySelector('.task-body');
-        taskBody.innerHTML += `<button type="button" class="btn btn-light btn-sm float-end start"><i class="bi bi-play"></i></button>`;
-        addStartButtonListener();
-        var btnEditar = droppedTask.querySelector('.btn-editar');
-        var eClick = btnEditar.onclick.toString().match(/showTask\([^)]*\)/)[0];
-        let taskArray = eClick.split(',');
-        taskArray[taskArray.length - 2] = ` 0`;
-        let modifiedOnclick = taskArray.join(',');
-        btnEditar.setAttribute('onclick', modifiedOnclick);
-        updateStatus(taskId, 0);
-      }
-      if (evt.to === doing) {
-        const droppedTask = evt.item;
-        const taskId = droppedTask.querySelector('.id').innerText;
-        const taskBody = droppedTask.querySelector('.task-body');
-        taskBody.innerHTML += `<button type="button" class="btn btn-light btn-sm float-end check"><i class="bi bi-check"></i></button>`;
-        addCheckButtonListener();
-        var btnEditar = droppedTask.querySelector('.btn-editar');
-        var eClick = btnEditar.onclick.toString().match(/showTask\([^)]*\)/)[0];
-        let taskArray = eClick.split(',');
-        taskArray[taskArray.length - 2] = ` 1`;
-        let modifiedOnclick = taskArray.join(',');
-        btnEditar.setAttribute('onclick', modifiedOnclick);
-        updateStatus(taskId, 1);
-      }
-      if (evt.to === done) {
-        const droppedTask = evt.item;
-        const taskId = droppedTask.querySelector('.id').innerText;
-        const taskBody = droppedTask.querySelector('.task-body');
-        taskBody.classList.remove('border-danger-subtle', 'border-warning-subtle', 'border-success-subtle', 'border-start', 'rounded-start-2', 'border-5');
-        taskBody.classList.add("border-5", "border-start", "border-success", "rounded-start-2");
-        taskBody.innerHTML += `<p class="float-end m-0 text-success task-status-completed">Tarefa completa!</p>`;
-        var btnEditar = droppedTask.querySelector('.btn-editar');
-        var eClick = btnEditar.onclick.toString().match(/showTask\([^)]*\)/)[0];
-        let taskArray = eClick.split(',');
-        taskArray[taskArray.length - 2] = ` 2`;
-        let modifiedOnclick = taskArray.join(',');
-        btnEditar.setAttribute('onclick', modifiedOnclick);
-        let prazo = droppedTask.querySelector('.deadline');
-        prazo.classList.remove('text-danger');
-        updateStatus(taskId, 2);
-      }
-    }
-  });
-
-if (done !== null)
-  new Sortable(done, {
-    group: 'shared',
-    animation: 300,
-    delayOnTouchOnly: true,
-    delay: 100,
-    dragClass: "sortable-drag",
-    ghostClass: "sortable-ghost",
-    onStart: function (evt) {
-      const draggedTask = evt.item;
-      const textCheck = draggedTask.querySelector('.task-status-completed');
-      textCheck.remove();
-      const taskBody = draggedTask.querySelector('.task-body');
-      taskBody.classList.remove("border-5", "border-start", "border-success", "rounded-start-2");
-    },
-    onEnd: function (evt) {
-      if (evt.to === todo) {
-        const droppedTask = evt.item;
-        const taskId = droppedTask.querySelector('.id').innerText;
-        const taskBody = droppedTask.querySelector('.task-body');
-        const priority = droppedTask.querySelector('.priority').innerHTML;
-        if (priority === "Prioridade: BAIXA") {
-          taskBody.classList.add("border-start", "rounded-start-2", "border-5", "border-success-subtle");
-        }
-        else if (priority === "Prioridade: MÉDIA") {
-          taskBody.classList.add("border-start", "rounded-start-2", "border-5", "border-warning-subtle");
-        }
-        else if (priority === "Prioridade: ALTA") {
-          taskBody.classList.add("border-start", "rounded-start-2", "border-5", "border-danger-subtle");
-        }
-        taskBody.innerHTML += `<button type="button" class="btn btn-light btn-sm float-end start"><i class="bi bi-play"></i></button>`;
-        addStartButtonListener();
-        var btnEditar = droppedTask.querySelector('.btn-editar');
-        var eClick = btnEditar.onclick.toString().match(/showTask\([^)]*\)/)[0];
-        let taskArray = eClick.split(',');
-        taskArray[taskArray.length - 2] = ` 0`;
-        let modifiedOnclick = taskArray.join(',');
-        btnEditar.setAttribute('onclick', modifiedOnclick);
-        updateStatus(taskId, 0);
-      }
-      if (evt.to === doing) {
-        const droppedTask = evt.item;
-        const taskId = droppedTask.querySelector('.id').innerText;
-        const taskBody = droppedTask.querySelector('.task-body');
-        const priority = droppedTask.querySelector('.priority').innerHTML;
-        if (priority === "Prioridade: BAIXA") {
-          taskBody.classList.add("border-start", "rounded-start-2", "border-5", "border-success-subtle");
-        }
-        else if (priority === "Prioridade: MÉDIA") {
-          taskBody.classList.add("border-start", "rounded-start-2", "border-5", "border-warning-subtle");
-        }
-        else if (priority === "Prioridade: ALTA") {
-          taskBody.classList.add("border-start", "rounded-start-2", "border-5", "border-danger-subtle");
-        }
-        taskBody.innerHTML += `<button type="button" class="btn btn-light btn-sm float-end check"><i class="bi bi-check"></i></button>`;
-        addCheckButtonListener();
-        var btnEditar = droppedTask.querySelector('.btn-editar');
-        var eClick = btnEditar.onclick.toString().match(/showTask\([^)]*\)/)[0];
-        let taskArray = eClick.split(',');
-        taskArray[taskArray.length - 2] = ` 1`;
-        let modifiedOnclick = taskArray.join(',');
-        btnEditar.setAttribute('onclick', modifiedOnclick);
-        updateStatus(taskId, 1);
-      }
-      if (evt.to === done) {
-        const droppedTask = evt.item;
-        const taskId = droppedTask.querySelector('.id').innerText;
-        const taskBody = droppedTask.querySelector('.task-body');
-        taskBody.classList.remove('border-danger-subtle', 'border-warning-subtle', 'border-success-subtle', 'border-start', 'rounded-start-2', 'border-5');
-        taskBody.classList.add("border-5", "border-start", "border-success", "rounded-start-2");
-        taskBody.innerHTML += `<p class="float-end m-0 text-success task-status-completed">Tarefa completa!</p>`;
-        var btnEditar = droppedTask.querySelector('.btn-editar');
-        var eClick = btnEditar.onclick.toString().match(/showTask\([^)]*\)/)[0];
-        let taskArray = eClick.split(',');
-        taskArray[taskArray.length - 2] = ` 2`;
-        let modifiedOnclick = taskArray.join(',');
-        btnEditar.setAttribute('onclick', modifiedOnclick);
-        let prazo = droppedTask.querySelector('.deadline');
-        prazo.classList.remove('text-danger');
-        updateStatus(taskId, 2);
-      }
-    }
-  });
-
-const startButton = document.getElementById('startButton');
-const popup = document.getElementById('popup');
-const tempoAtividadeInput = document.getElementById('tempoAtividade');
-const tempoIntervaloInput = document.getElementById('tempoIntervalo');
-let numRepeticoesInput = document.getElementById('numRepeticoes');
-const submitButton = document.getElementById('submitButton');
-const cronometroDisplay = document.getElementById('cronometro');
-const configure = document.getElementById('configure');
-const notifications = document.getElementById('notifications');
-const notifpopup = document.getElementById('popupNot');
-const submitButtonnot = document.getElementById('submitButtonnot');
-const toggleNotifications = document.getElementById('toggleNotifications');
-const notifinit = document.getElementById('notifinit');
-const notifinter = document.getElementById('notifinter');
-const notifativ = document.getElementById('notifativ');
-
-
-const apiUrlLembrete = 'https://json-server-web-api-tarefas.gustavoalvaren3.repl.co/lembretes';
-
-
-const toggleState = localStorage.getItem('toggleState');
-
-document.addEventListener('DOMContentLoaded', function () {
-
-  function salvarEstadoToggle(id, checked) {
-    localStorage.setItem(id, checked ? 'ativado' : 'desativado');
-  }
-
-
-  if (document.getElementById('notifinit') != null)
-    document.getElementById('notifinit').addEventListener('change', function () {
-      salvarEstadoToggle('notifinit', this.checked);
-    });
-
-  if (document.getElementById('notifinter') != null)
-    document.getElementById('notifinter').addEventListener('change', function () {
-      salvarEstadoToggle('notifinter', this.checked);
-    });
-
-  if (document.getElementById('notifativ') != null)
-    document.getElementById('notifativ').addEventListener('change', function () {
-      salvarEstadoToggle('notifativ', this.checked);
-    });
-
-
-  if (localStorage.getItem('notifinit') != null) {
-    const estadosIniciais = {
-      'notifinit': localStorage.getItem('notifinit') === 'ativado',
-      'notifinter': localStorage.getItem('notifinter') === 'ativado',
-      'notifativ': localStorage.getItem('notifativ') === 'ativado',
-    };
-  }
-
-
-  if (document.getElementById('notifinit') != null) {
-    document.getElementById('notifinit').checked = estadosIniciais['notifinit'];
-    document.getElementById('notifinter').checked = estadosIniciais['notifinter'];
-    document.getElementById('notifativ').checked = estadosIniciais['notifativ'];
-  }
-});
-
-
-document.addEventListener('DOMContentLoaded', function () {
-
-
-  if (toggleState === 'ativado' && toggleNotifications !== null) {
-    toggleNotifications.checked = true;
-  }
-
-
-  if (toggleNotifications !== null)
-    toggleNotifications.addEventListener('change', function () {
-      const permitirNotificacoes = toggleNotifications.checked;
-
-
-      localStorage.setItem('toggleState', permitirNotificacoes ? 'ativado' : 'desativado');
-
-
-      if (permitirNotificacoes) {
-
-      }
-    });
-
-
-
-
-
-
-
-
-  if ('Notification' in window) {
-
-    Notification.requestPermission().then(function (permission) {
-      if (permission === 'granted') {
-
-        const notification = new Notification('Título da Notificação', {
-          body: 'Corpo da Notificação',
-
-        });
-
-
-        notification.addEventListener('click', function () {
-          console.log('Notificação clicada');
-        });
-      } else {
-        console.warn('Permissão para notificações negada pelo usuário');
-      }
-    });
-  } else {
-    console.error('Este navegador não suporta a API de Notificações');
-  }
-
-
-  function enviarNotificacao() {
-
-    if ('Notification' in window) {
-
-      Notification.requestPermission().then(function (permission) {
-        if (permission === 'granted') {
-
-          const notification = new Notification('Título da Notificação', {
-            body: 'Corpo da Notificação',
-
-          });
-
-
-          notification.addEventListener('click', function () {
-            console.log('Notificação clicada');
-          });
-        } else {
-          console.warn('Permissão para notificações negada pelo usuário');
-        }
-      });
-    } else {
-      console.error('Este navegador não suporta a API de Notificações');
-    }
-  }
-
-  document.addEventListener('DOMContentLoaded', function () {
-
-    if ('Notification' in window) {
-
-      if (Notification.permission === 'granted') {
-        console.log('Notificações permitidas');
-      } else if (Notification.permission !== 'denied') {
-
-        document.getElementById('configurarNotificacoes');
-      }
-    }
-
-
-    document.getElementById('configurarNotificacoes').addEventListener('click', function () {
-      const toggleNotifications = document.getElementById('toggleNotifications');
-
-
-      if (toggleNotifications.checked) {
-
-        Notification.requestPermission().then(function (permission) {
-          if (permission === 'granted') {
-            console.log('Notificações permitidas');
-          }
-        });
-      } else {
-
-        Notification.requestPermission().then(function (permission) {
-          if (permission === 'granted') {
-
-            let notifications = window.open('', '_self', '');
-            notifications.close();
-
-
-            console.log('Notificações desativadas');
-          }
-        });
-      }
-    });
-  });
-
-  let segundos = 0;
-  let clique = false;
-  let ativ = true;
-
-  if (configure !== null)
-    configure.addEventListener('click', () => {
-
-      popup.style.display = 'block';
-      {
-        clearInterval(cronometro);
-        if (clique = true) {
-          clique = false
-        }
-      }
-
-
-    });
-
-  if (notifications !== null) {
-    notifications.addEventListener('click', () => {
-
-      notifpopup.style.display = 'block';
-    })
-    submitButtonnot.addEventListener('click', () => {
-      notifpopup.style.display = 'none';
-    })
-
-
-
-
-    submitButton.addEventListener('click', () => {
-
-      const dados = {
-        tempoAtividade: tempoAtividadeInput.value,
-        tempoIntervalo: tempoIntervaloInput.value,
-        numRepeticoes: numRepeticoesInput.value,
-      };
-
-      if (!tempoAtividadeInput.value || !tempoIntervaloInput.value || !numRepeticoesInput.value) {
-
-        popup.style.display = 'none';
-      }
-      else {
-
-        if ((tempoAtividadeInput.value) < 0 || (tempoIntervaloInput.value) < 0 || (numRepeticoesInput.value) < 0) {
-          alert('Certifique-se que os valores são maiores que 0 e o tempo de atividade maior que o intervalo')
-        }
-        else {
-          if (clique = true) {
-            clique = false
-            clearInterval(cronometro);
-            segundos = 0;
-            cronometroDisplay.innerHTML = "00" + ":" + 0 + 0;
-          }
-          localStorage.setItem('dados', JSON.stringify(dados));
-
-          popup.style.display = 'none';
-        }
-      }
-    });
-
-
-    startButton.addEventListener('click', () => {
-      if (!clique) {
-        cronometro = setInterval(() => {
-          segundos++;
-          atualizarCronometro(cronometroDisplay);
-        }, 1000);
-
-        if (notifinit.checked && (toggleNotifications.checked)) {
-          ativarNotificacoes();
-        }
-
-
-        clique = true
-      }
-
-    });
-
-    function atualizarCronometro(display) {
-
-
-      let minutos = Math.floor(segundos / 60);
-      let segundosExibicao = segundos % 60;
-
-      const minutosFormatados = minutos < 10 ? '0' + minutos : minutos;
-      const segundosFormatados = segundosExibicao < 10 ? '0' + segundosExibicao : segundosExibicao;
-
-
-      display.innerHTML = minutosFormatados + ':' + segundosFormatados;
-
-      const atv = true
-      const Caudio = new Audio('Beautiful-Music.mp3')
-
-      if (numRepeticoesInput.value == 0) {
-        clearInterval(cronometro);
-        segundos = 0;
-        cronometroDisplay.innerHTML = "00" + ":" + 0 + 0;
-      }
-
-      else {
-
-        if (minutos >= tempoIntervaloInput.value && ativ == false) {
-          clearInterval(cronometro);
-          segundos = 0;
-          cronometroDisplay.innerHTML = "00" + ":" + 0 + 0;
-          if (tempoAtividadeInput.value > 0 || tempoIntervaloInput.value > 0 || numRepeticoesInput.value > 0) {
-            Caudio.play();
-            numRepeticoesInput.value--;
-          }
-          cronometro = setInterval(() => {
-            segundos++;
-            atualizarCronometro(cronometroDisplay);
-          }, 1000)
-
-          if (notifinter.checked && (toggleNotifications.checked)) {
-            ativarNotificacoes();
-          }
-
-
-
-          ativ = true;
-        }
-
-        else {
-
-          if (minutos >= tempoAtividadeInput.value && atv === true) {
-            clearInterval(cronometro);
-            segundos = 0;
-            cronometroDisplay.innerHTML = "00" + ":" + 0 + 0;
-            if (tempoAtividadeInput.value > 0 || tempoIntervaloInput.value > 0 || numRepeticoesInput.value > 0) {
-              Caudio.play();
-            }
-            cronometro = setInterval(() => {
-              segundos++;
-              atualizarCronometro(cronometroDisplay);
-            }, 1000)
-
-            if (notifativ.checked && (toggleNotifications.checked)) {
-              ativarNotificacoes();
-            }
-
-            ativ = false;
-          }
-        }
-      }
-    }
-  }
-
-  function ativarNotificacoes() {
-    fetch(apiUrlLembrete)
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`Erro na solicitação: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then(data => {
-
-        if (data && (Array.isArray(data) || typeof data === 'string')) {
-          const lembretes = typeof data === 'string' ? JSON.parse(data) : data;
-
-
-          if (Array.isArray(lembretes)) {
-
-            lembretes.forEach(lembrete => {
-              if (lembrete.content) {
-                alert(lembrete.title + ':' + lembrete.content);
-
-              }
-            });
-          } else {
-            console.error('Estrutura de dados inválida: "lembretes" não é um array.');
-          }
-        } else {
-          console.error('Estrutura de dados inválida ou ausência de lembretes.');
-        }
-      })
-      .catch(error => {
-        console.error('Erro ao fazer a solicitação:', error);
-      });
-  }
-});
-
-
-
-const formAddTask = document.getElementById('formAddTask')
-const formEditTask = document.getElementById('formEditTask')
-
-
-const btnCreateTask = document.getElementById('btnCreateTask')
-const btnEditTask = document.getElementById('btnEditTask')
-const btnDeleteTask = document.getElementById('btnDeleteTask')
-
-
-const titleInput = document.getElementById('title')
-const descriptionInput = document.getElementById('description')
-const dateInput = document.getElementById('end-date')
-const priorityInput = document.getElementById('priority')
-
-
-const idEditInput = document.getElementById('idEditInput')
-const titleEditInput = document.getElementById('titleEditInput')
-const descriptionEditInput = document.getElementById('descriptionEditInput')
-const dateEditInput = document.getElementById('dateEditInput')
-const priorityEditInput = document.getElementById('priorityEditInput')
-const statusEditInput = document.getElementById('statusEditInput')
-const lateEditInput = document.getElementById('lateEditInput')
-
-
-const deleteId = document.getElementById('inputDeleteId')
-
-
-let date = new Date()
-let formatedDate = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`
-
-if (dateInput != null) {
-  dateInput.value = `${formatedDate}T23:59`
-}
-
-
-if (btnCreateTask != null)
-  btnCreateTask.addEventListener('click', event => {
-
-    event.preventDefault()
-
-    if (!formAddTask.checkValidity()) {
-
-      checkInputValid(titleInput)
-      checkInputValid(descriptionInput)
-      checkInputValid(dateInput)
-
-      return
-    }
-
-    let status = statusEditInput.value !== '' ? returnValueById('statusEditInput') : 0;
-
-    let task = {
-      id: 0,
-      title: returnValueById('title'),
-      description: returnValueById('description').replace(/(\r\n|\n|\r)/gm, ""),
-      start: returnValueById('end-date'),
-      priority: returnValueById('priority'),
-      status: status,
-      late: false
-    }
-
-    createTask(task)
-
-    formAddTask.reset()
-    $('#modalAddTask').modal('toggle')
-
-
-    if (document.getElementById('lista') != null)
-      setTimeout(() => {
-        readTasks()
-        window.scrollTo(0, document.body.scrollHeight)
-      }, 2000)
-
-  })
-
-
-if (btnEditTask != null)
-  btnEditTask.addEventListener('click', event => {
-
-    event.preventDefault()
-
-    if (!formEditTask.checkValidity()) {
-
-      checkInputValid(titleEditInput)
-      checkInputValid(descriptionEditInput)
-      checkInputValid(dateEditInput)
-
-      return
-    }
-
-    let task = {
-      title: returnValueById('titleEditInput'),
-      description: returnValueById('descriptionEditInput').replace(/(\r\n|\n|\r)/gm, ""),
-      start: returnValueById('dateEditInput'),
-      priority: returnValueById('priorityEditInput'),
-      status: returnValueById('statusEditInput'),
-      late: returnValueById('lateEditInput')
-    }
-
-    let id = parseInt(returnValueById('idEditInput'))
-
-    updateTask(id, task)
-
-    formAddTask.reset()
-    $('#modalEditTask').modal('toggle')
-
-
-    if (document.getElementById('lista') != null) {
-      setTimeout(() => {
-        readTasks()
-      }, 2000)
-    }
-
-    if (document.getElementById('kanban') != null) {
-      $(`#task${id}`).closest('.task').remove();
-      task.id = id;
-      showtasks([task]);
-    }
-
-  })
-
-
-if (btnCreateTask != null)
-  btnDeleteTask.addEventListener('click', () => {
-
-    let id = parseInt(returnValueById('inputDeleteId'))
-
-    deleteTask(id)
-
-    $(`#task${id}`).closest('.task').remove();
-
-    $('#modalDeleteTask').modal('toggle')
-
-
-    setTimeout(() => {
-      readTasks()
-    }, 2000)
-  })
-
-
-
-const returnValueById = id => document.getElementById(id).value
-
-
-function checkInputValid(input) {
-
-  if (input.value == '')
-    input.classList.add('is-invalid')
-  else
-    input.classList.remove('is-invalid')
-}
-
-
-function displaySuccsMessage(mensagem) {
-  msg = document.getElementById('msg');
-  msg.innerHTML =
-    `<div class="alert alert-success alert-dismissible fade show" role="alert">
-        ${mensagem}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>`;
-}
-
-function displayErrMessage(mensagem) {
-  msg = document.getElementById('msg');
-  msg.innerHTML =
-    `<div class="alert alert-danger alert-dismissible fade show" role="alert">
-        ${mensagem}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>`;
-}
-
-function formatStatus(status) {
-    if (status == 0) return 'To-Do'
-    else if (status == 1) return 'Doing'
-    else if (status == 2) return 'Done'
-}
-
-
-function showTasks(tasks) {
+function showTasks() {
 
   const table = document.getElementById('tasksTable');
   let content = '';
 
-  tasks.forEach(task => {
+  tarefas.forEach(task => {
 
     content +=
       `<tr>
@@ -1007,199 +368,370 @@ function showTask(id, title, description, start, priority, status, late) {
   $('#modalEditTask').modal('toggle')
 }
 
-function deleteConfirm(id) {
+const returnValueById = id => document.getElementById(id).value;
 
+function checkInputValid(input) {
+  if (input.value == '')
+    input.classList.add('is-invalid')
+  else
+    input.classList.remove('is-invalid')
+}
+
+function displaySuccsMessage(mensagem) {
+  msg = document.getElementById('msg');
+  msg.innerHTML =
+    `<div class="alert alert-success alert-dismissible fade show" role="alert">
+        ${mensagem}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>`;
+}
+
+function displayErrMessage(mensagem) {
+  msg = document.getElementById('msg');
+  msg.innerHTML =
+    `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+        ${mensagem}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>`;
+}
+
+function deleteConfirm(id) {
   deleteId.value = id;
   $('#modalDeleteTask').modal('toggle')
 }
 
+document.addEventListener('DOMContentLoaded', () => {
+  let date = new Date();
+  let formatedDate = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
 
-function createTask(task) {
-  fetch(apiURL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(task)
+  if (dateInput != null) {
+    dateInput.value = `${formatedDate}T23:59`
+  }
 
-  })
-    .then(res => {
-      if (res.status == 201) { displaySuccsMessage('Tarefa adicionada com sucesso!'); return res.json(); }
-      else { displayErrMessage('A tarefa não foi adicionada!'); throw new Error('Erro ao adicionar a tarefa'); }
+  if (btnCreateTask != null) {
+    btnCreateTask.addEventListener('click', event => {
+  
+      event.preventDefault()
+  
+      if (!formAddTask.checkValidity()) {
+  
+        checkInputValid(titleInput);
+        checkInputValid(descriptionInput);
+        checkInputValid(dateInput);
+  
+        return;
+      }
+  
+      let status = statusEditInput.value !== '' ? returnValueById('statusEditInput') : 0;
+  
+      let task = {
+        title: returnValueById('title'),
+        description: returnValueById('description').replace(/(\r\n|\n|\r)/gm, ""),
+        start: returnValueById('end-date'),
+        priority: returnValueById('priority'),
+        status: status,
+        late: false
+      };
+  
+      createTask(task);
+      task.id = proximoIdTarefa - 1;
+  
+      formAddTask.reset();
+      $('#modalAddTask').modal('toggle');
+  
+  
+      if (document.getElementById('lista') != null) {
+        setTimeout(() => {
+          showTasks();
+          window.scrollTo(0, document.body.scrollHeight)
+        }, 2000)
+      }
 
+      showTaskInKanban(task);
     })
-    .then(data => showtasks([data]))
-    .catch(error => {
-      console.error(error)
+  }
+
+  if (btnEditTask != null) {
+    btnEditTask.addEventListener('click', event => {
+  
+      event.preventDefault()
+  
+      if (!formEditTask.checkValidity()) {
+  
+        checkInputValid(titleEditInput);
+        checkInputValid(descriptionEditInput);
+        checkInputValid(dateEditInput);
+  
+        return;
+      }
+  
+      let task = {
+        title: returnValueById('titleEditInput'),
+        description: returnValueById('descriptionEditInput').replace(/(\r\n|\n|\r)/gm, ""),
+        start: returnValueById('dateEditInput'),
+        priority: returnValueById('priorityEditInput'),
+        status: returnValueById('statusEditInput'),
+        late: returnValueById('lateEditInput')
+      }
+  
+      let id = parseInt(returnValueById('idEditInput'))
+  
+      updateTask(id, task)
+  
+      formAddTask.reset()
+      $('#modalEditTask').modal('toggle')
+  
+  
+      if (document.getElementById('lista') != null) {
+        setTimeout(() => {
+          showTasks();
+        }, 2000)
+      }
+  
+      if (document.getElementById('kanban') != null) {
+        $(`#task${id}`).closest('.task').remove();
+        task.id = id;
+        showTaskInKanban(task);
+      }
+  
     })
-}
+  }
 
-function readTasks() {
-  fetch(apiURL, {
-    method: 'GET',
-    headers: { 'Content-Type': 'application/json' }
-  })
-    .then(res => res.json())
-    .then(data => showTasks(data))
-    .catch(error => {
-      console.error(error)
+  if (btnDeleteTask != null) {
+    btnDeleteTask.addEventListener('click', () => {
+  
+      let id = parseInt(returnValueById('inputDeleteId'))
+  
+      deleteTask(id)
+  
+      $(`#task${id}`).closest('.task').remove();
+  
+      $('#modalDeleteTask').modal('toggle')
+
+      showTasks();
     })
-}
+  }
 
-function readTask(id) {
-  fetch(`${apiURL}/${id}`, {
-    method: 'GET',
-    headers: { 'Content-Type': 'application/json' }
-  })
-    .then(res => res.json())
-    .then(data => { showTask(data) })
-    .catch(error => {
-      console.error(error)
+  if (document.querySelector('.linha-kanban') !== null) {
+    new Sortable(document.querySelector('.linha-kanban'), {
+      animation: 250,
+      draggable: '.coluna-kanban',
+      delayOnTouchOnly: true,
+      handle: '.colummn-header'
     })
-}
-
-function updateTask(id, task) {
-  fetch(`${apiURL}/${id}`, {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(task)
-
-  })
-    .then(res => {
-      if (res.status == 200) displaySuccsMessage('Tarefa atualizada com sucesso!')
-      else displayErrMessage('A tarefa não foi atualizada!')
-    })
-    .catch(error => {
-      console.error(error)
-    })
-}
-
-function deleteTask(id) {
-  fetch(`${apiURL}/${id}`, {
-    method: 'DELETE'
-  })
-    .then(res => {
-      if (res.status == 200) displaySuccsMessage('Tarefa excluída com sucesso!')
-      else displayErrMessage('Não foi possível excluir a tarefa')
-    })
-    .catch(error => {
-      console.error(error)
-    })
-}
-
-
-if (document.getElementById('calendar') != null)
-  fetch('https://replit.com/@MateusADM/Json-Server-Web-API#data.json')
-    .then(response => response.json()) // Converte a resposta para JSON
-    .then(data => {
-      tarefas = data; // Armazena os dados da resposta na array de tarefas
-
-
-      jQuery(function () {
-        jQuery('#calendar').fullCalendar({
-
-          businessHours: false,
-          defaultView: 'month',
-          editable: true,
-          height: 600,
-          header: {
-            left: 'title',
-            center: 'month,agendaWeek,agendaDay',
-            right: 'prev, today, next'
-          },
-          events: tarefas, // Adiciona as tarefas ao calendário como eventos    
-          eventDrop: function (evento, delta, revertFunc) {
-            const eventoAtualizado = {
-              start: evento.start.format(), // Atualiza a data de início da tarefa
-              end: evento.end ? evento.end.format() : null // Atualiza a data de término da tarefa, se existir
-            };
-
-
-            fetch(`https://replit.com/@MateusADM/Json-Server-Web-API#data.json/${evento.id}`, {
-              method: 'PATCH',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify(eventoAtualizado) // Inclui todas as informações necessárias
-            })
-              .then(response => response.json()) // Converte a resposta para JSON
-              .then(updatedEvent => {
-
-                const index = tarefas.findIndex(tarefa => tarefa.id === updatedEvent.id);
-                tarefas[index] = updatedEvent;
-
-
-                jQuery('#calendar').fullCalendar('refetchEvents');
-              })
-              .catch(error => {
-                console.error('Erro ao atualizar a tarefa:', error);
-                revertFunc(); // Reverte a mudança se houver um erro na atualização
-              });
-          },
-          eventRender: function (event, element) {
-
-            if (event.end && event.end.isBefore(moment())) {
-
-              element.css('background-color', 'red');
-              if (event.late !== true) {
-                const eventoAtualizado = {
-                  late: true
-                };
-
-
-                fetch(`https://replit.com/@MateusADM/Json-Server-Web-API#data.json/${event.id}`, {
-                  method: 'PATCH',
-                  headers: {
-                    'Content-Type': 'application/json',
-                  },
-                  body: JSON.stringify(eventoAtualizado), // Inclui todas as informações necessárias
-                })
-              }
-            } else if (event.late !== false) {
-              const eventoAtualizado = {
-                late: false
-              };
-
-
-              fetch(`https://replit.com/@MateusADM/Json-Server-Web-API#data.json/${event.id}`, {
-                method: 'PATCH',
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(eventoAtualizado), // Inclui todas as informações necessárias
-              })
-            }
-          },
-          dayClick: function(date) {
-            formAddTask.reset();
-            let formattedDate = date.format('YYYY-MM-DD  HH:mm').replace('  ', 'T');
-            document.querySelector("#end-date").value = formattedDate;
-            $('#modalAddTask').modal('toggle');
-          },
-
-          locale: 'pt-br', // Define o idioma para português brasileiro
-          buttonText: {
-            today: 'Hoje',
-            month: 'Mês',
-            week: 'Semana',
-            day: 'Dia',
-          },
-          monthNames: [
-            'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
-            'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
-          ],
-          monthNamesShort: [
-            'Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun',
-            'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'
-          ],
-          dayNames: [
-            'Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'
-          ],
-          dayNamesShort: [
-            'Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'
-          ]
-        });
-      });
-    })
-    .catch(error => {
-      console.error('Erro:', error);
-      window.alert('Erro ao carregar as tarefas\nContate o desenvolvedor!\n\n Espere 5 segundos para o JSON server iniciar e tente recarregar a página...'); // Exibe um alerta em caso de erro
+  }
+  
+  if (todo !== null) {
+    new Sortable(todo, {
+      group: 'shared',
+      animation: 300,
+      delayOnTouchOnly: true,
+      delay: 100,
+      dragClass: "sortable-drag",
+      ghostClass: "sortable-ghost",
+      onStart: function (evt) {
+        const draggedTask = evt.item;
+        const btnStart = draggedTask.querySelector('.start');
+        btnStart.remove();
+      },
+      onEnd: function (evt) {
+        if (evt.to === todo) {
+          const droppedTask = evt.item;
+          const taskId = droppedTask.querySelector('.id').innerText;
+          const taskBody = droppedTask.querySelector('.task-body');
+          taskBody.innerHTML += `<button type="button" class="btn btn-light btn-sm float-end start"><i class="bi bi-play"></i></button>`;
+          addStartButtonListener();
+          let btnEditar = droppedTask.querySelector('.btn-editar');
+          let eClick = btnEditar.onclick.toString().match(/showTask\([^)]*\)/)[0];
+          let taskArray = eClick.split(',');
+          taskArray[taskArray.length - 2] = ` 0`;
+          let modifiedOnclick = taskArray.join(',');
+          btnEditar.setAttribute('onclick', modifiedOnclick);
+          updateStatus(taskId, 0);
+        }
+        if (evt.to === doing) {
+          const droppedTask = evt.item;
+          const taskId = droppedTask.querySelector('.id').innerText;
+          const taskBody = droppedTask.querySelector('.task-body');
+          taskBody.innerHTML += `<button type="button" class="btn btn-light btn-sm float-end check"><i class="bi bi-check"></i></button>`;
+          addCheckButtonListener();
+          let btnEditar = droppedTask.querySelector('.btn-editar');
+          let eClick = btnEditar.onclick.toString().match(/showTask\([^)]*\)/)[0];
+          let taskArray = eClick.split(',');
+          taskArray[taskArray.length - 2] = ` 1`;
+          let modifiedOnclick = taskArray.join(',');
+          btnEditar.setAttribute('onclick', modifiedOnclick);
+          updateStatus(taskId, 1);
+        }
+        if (evt.to === done) {
+          const droppedTask = evt.item;
+          const taskId = droppedTask.querySelector('.id').innerText;
+          const taskBody = droppedTask.querySelector('.task-body');
+          taskBody.classList.remove('border-danger-subtle', 'border-warning-subtle', 'border-success-subtle', 'border-start', 'rounded-start-2', 'border-5');
+          taskBody.classList.add("border-5", "border-start", "border-success", "rounded-start-2");
+          taskBody.innerHTML += `<p class="float-end m-0 text-success task-status-completed">Tarefa completa!</p>`;
+          let btnEditar = droppedTask.querySelector('.btn-editar');
+          let eClick = btnEditar.onclick.toString().match(/showTask\([^)]*\)/)[0];
+          let taskArray = eClick.split(',');
+          taskArray[taskArray.length - 2] = ` 2`;
+          let modifiedOnclick = taskArray.join(',');
+          btnEditar.setAttribute('onclick', modifiedOnclick);
+          let prazo = droppedTask.querySelector('.deadline');
+          prazo.classList.remove('text-danger');
+          updateStatus(taskId, 2);
+        }
+      }
     });
+  }
+  
+  if (doing !== null) {
+    new Sortable(doing, {
+      group: 'shared',
+      animation: 300,
+      delayOnTouchOnly: true,
+      delay: 100,
+      dragClass: "sortable-drag",
+      ghostClass: "sortable-ghost",
+      onStart: function (evt) {
+        const draggedTask = evt.item;
+        const btnCheck = draggedTask.querySelector('.check');
+        btnCheck.remove();
+      },
+      onEnd: function (evt) {
+        if (evt.to === todo) {
+          const droppedTask = evt.item;
+          const taskId = droppedTask.querySelector('.id').innerText;
+          const taskBody = droppedTask.querySelector('.task-body');
+          taskBody.innerHTML += `<button type="button" class="btn btn-light btn-sm float-end start"><i class="bi bi-play"></i></button>`;
+          addStartButtonListener();
+          let btnEditar = droppedTask.querySelector('.btn-editar');
+          let eClick = btnEditar.onclick.toString().match(/showTask\([^)]*\)/)[0];
+          let taskArray = eClick.split(',');
+          taskArray[taskArray.length - 2] = ` 0`;
+          let modifiedOnclick = taskArray.join(',');
+          btnEditar.setAttribute('onclick', modifiedOnclick);
+          updateStatus(taskId, 0);
+        }
+        if (evt.to === doing) {
+          const droppedTask = evt.item;
+          const taskId = droppedTask.querySelector('.id').innerText;
+          const taskBody = droppedTask.querySelector('.task-body');
+          taskBody.innerHTML += `<button type="button" class="btn btn-light btn-sm float-end check"><i class="bi bi-check"></i></button>`;
+          addCheckButtonListener();
+          let btnEditar = droppedTask.querySelector('.btn-editar');
+          let eClick = btnEditar.onclick.toString().match(/showTask\([^)]*\)/)[0];
+          let taskArray = eClick.split(',');
+          taskArray[taskArray.length - 2] = ` 1`;
+          let modifiedOnclick = taskArray.join(',');
+          btnEditar.setAttribute('onclick', modifiedOnclick);
+          updateStatus(taskId, 1);
+        }
+        if (evt.to === done) {
+          const droppedTask = evt.item;
+          const taskId = droppedTask.querySelector('.id').innerText;
+          const taskBody = droppedTask.querySelector('.task-body');
+          taskBody.classList.remove('border-danger-subtle', 'border-warning-subtle', 'border-success-subtle', 'border-start', 'rounded-start-2', 'border-5');
+          taskBody.classList.add("border-5", "border-start", "border-success", "rounded-start-2");
+          taskBody.innerHTML += `<p class="float-end m-0 text-success task-status-completed">Tarefa completa!</p>`;
+          let btnEditar = droppedTask.querySelector('.btn-editar');
+          let eClick = btnEditar.onclick.toString().match(/showTask\([^)]*\)/)[0];
+          let taskArray = eClick.split(',');
+          taskArray[taskArray.length - 2] = ` 2`;
+          let modifiedOnclick = taskArray.join(',');
+          btnEditar.setAttribute('onclick', modifiedOnclick);
+          let prazo = droppedTask.querySelector('.deadline');
+          prazo.classList.remove('text-danger');
+          updateStatus(taskId, 2);
+        }
+      }
+    });
+  }
+  
+  if (done !== null) {
+    new Sortable(done, {
+      group: 'shared',
+      animation: 300,
+      delayOnTouchOnly: true,
+      delay: 100,
+      dragClass: "sortable-drag",
+      ghostClass: "sortable-ghost",
+      onStart: function (evt) {
+        const draggedTask = evt.item;
+        const textCheck = draggedTask.querySelector('.task-status-completed');
+        textCheck.remove();
+        const taskBody = draggedTask.querySelector('.task-body');
+        taskBody.classList.remove("border-5", "border-start", "border-success", "rounded-start-2");
+      },
+      onEnd: function (evt) {
+        if (evt.to === todo) {
+          const droppedTask = evt.item;
+          const taskId = droppedTask.querySelector('.id').innerText;
+          const taskBody = droppedTask.querySelector('.task-body');
+          const priority = droppedTask.querySelector('.priority').innerHTML;
+          if (priority === "Prioridade: BAIXA") {
+            taskBody.classList.add("border-start", "rounded-start-2", "border-5", "border-success-subtle");
+          }
+          else if (priority === "Prioridade: MÉDIA") {
+            taskBody.classList.add("border-start", "rounded-start-2", "border-5", "border-warning-subtle");
+          }
+          else if (priority === "Prioridade: ALTA") {
+            taskBody.classList.add("border-start", "rounded-start-2", "border-5", "border-danger-subtle");
+          }
+          taskBody.innerHTML += `<button type="button" class="btn btn-light btn-sm float-end start"><i class="bi bi-play"></i></button>`;
+          addStartButtonListener();
+          let btnEditar = droppedTask.querySelector('.btn-editar');
+          let eClick = btnEditar.onclick.toString().match(/showTask\([^)]*\)/)[0];
+          let taskArray = eClick.split(',');
+          taskArray[taskArray.length - 2] = ` 0`;
+          let modifiedOnclick = taskArray.join(',');
+          btnEditar.setAttribute('onclick', modifiedOnclick);
+          updateStatus(taskId, 0);
+        }
+        if (evt.to === doing) {
+          const droppedTask = evt.item;
+          const taskId = droppedTask.querySelector('.id').innerText;
+          const taskBody = droppedTask.querySelector('.task-body');
+          const priority = droppedTask.querySelector('.priority').innerHTML;
+          if (priority === "Prioridade: BAIXA") {
+            taskBody.classList.add("border-start", "rounded-start-2", "border-5", "border-success-subtle");
+          }
+          else if (priority === "Prioridade: MÉDIA") {
+            taskBody.classList.add("border-start", "rounded-start-2", "border-5", "border-warning-subtle");
+          }
+          else if (priority === "Prioridade: ALTA") {
+            taskBody.classList.add("border-start", "rounded-start-2", "border-5", "border-danger-subtle");
+          }
+          taskBody.innerHTML += `<button type="button" class="btn btn-light btn-sm float-end check"><i class="bi bi-check"></i></button>`;
+          addCheckButtonListener();
+          let btnEditar = droppedTask.querySelector('.btn-editar');
+          let eClick = btnEditar.onclick.toString().match(/showTask\([^)]*\)/)[0];
+          let taskArray = eClick.split(',');
+          taskArray[taskArray.length - 2] = ` 1`;
+          let modifiedOnclick = taskArray.join(',');
+          btnEditar.setAttribute('onclick', modifiedOnclick);
+          updateStatus(taskId, 1);
+        }
+        if (evt.to === done) {
+          const droppedTask = evt.item;
+          const taskId = droppedTask.querySelector('.id').innerText;
+          const taskBody = droppedTask.querySelector('.task-body');
+          taskBody.classList.remove('border-danger-subtle', 'border-warning-subtle', 'border-success-subtle', 'border-start', 'rounded-start-2', 'border-5');
+          taskBody.classList.add("border-5", "border-start", "border-success", "rounded-start-2");
+          taskBody.innerHTML += `<p class="float-end m-0 text-success task-status-completed">Tarefa completa!</p>`;
+          let btnEditar = droppedTask.querySelector('.btn-editar');
+          let eClick = btnEditar.onclick.toString().match(/showTask\([^)]*\)/)[0];
+          let taskArray = eClick.split(',');
+          taskArray[taskArray.length - 2] = ` 2`;
+          let modifiedOnclick = taskArray.join(',');
+          btnEditar.setAttribute('onclick', modifiedOnclick);
+          let prazo = droppedTask.querySelector('.deadline');
+          prazo.classList.remove('text-danger');
+          updateStatus(taskId, 2);
+        }
+      }
+    });
+  }
+
+  tarefas.map((task) => showTaskInKanban(task));
+});
+
