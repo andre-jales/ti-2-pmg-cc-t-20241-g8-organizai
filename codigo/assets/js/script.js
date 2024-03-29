@@ -430,7 +430,7 @@ document.addEventListener('DOMContentLoaded', () => {
         start: returnValueById('end-date'),
         priority: returnValueById('priority'),
         status: status,
-        late: false
+        late: moment(returnValueById('end-date')).isBefore(moment())
       };
   
       createTask(task);
@@ -471,7 +471,7 @@ document.addEventListener('DOMContentLoaded', () => {
         start: returnValueById('dateEditInput'),
         priority: returnValueById('priorityEditInput'),
         status: returnValueById('statusEditInput'),
-        late: returnValueById('lateEditInput')
+        late: moment(returnValueById('dateEditInput')).isBefore(moment())
       }
   
       let id = parseInt(returnValueById('idEditInput'))
@@ -733,5 +733,85 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   tarefas.map((task) => showTaskInKanban(task));
-});
 
+  jQuery(function () {
+    jQuery('#calendar').fullCalendar({
+  
+      businessHours: false,
+      defaultView: 'month',
+      editable: true,
+      height: 600,
+      header: {
+        left: 'title',
+        center: 'month,agendaWeek,agendaDay',
+        right: 'prev, today, next'
+      },
+      events: tarefas, // Utiliza o array de tarefas local como eventos
+      eventDrop: function (evento, delta, revertFunc) {
+        const index = tarefas.findIndex(tarefa => tarefa.id === evento.id);
+        if (index !== -1) {
+          tarefas[index].start = evento.start.format(); // Atualiza a data de início da tarefa
+          if (evento.end) {
+            tarefas[index].end = evento.end.format(); // Atualiza a data de término da tarefa, se existir
+          }
+        }
+  
+        const eventoAtualizado = {
+          start: evento.start.format(), // Atualiza a data de início da tarefa
+          end: evento.end ? evento.end.format() : null // Atualiza a data de término da tarefa, se existir
+        };
+  
+        // Simulação de requisição para atualizar evento
+        // Aqui você pode colocar sua lógica para atualizar o evento no servidor
+        // Esta parte está apenas simulando a atualização localmente
+        setTimeout(() => {
+          console.log("Evento atualizado:", eventoAtualizado);
+          // Aqui você pode adicionar sua lógica para enviar os dados atualizados para o servidor
+        }, 1000);
+      },
+      eventRender: function (event, element) {
+        if (event.end && event.end.isBefore(moment())) {
+          element.css('background-color', 'red');
+        }
+  
+        // Simulação de requisição para atualizar evento
+        // Aqui você pode colocar sua lógica para atualizar o evento no servidor
+        // Esta parte está apenas simulando a atualização localmente
+        setTimeout(() => {
+          if (event.late !== true) {
+            const eventoAtualizado = {
+              late: true
+            };
+            console.log("Evento atualizado:", eventoAtualizado);
+            // Aqui você pode adicionar sua lógica para enviar os dados atualizados para o servidor
+          }
+        }, 1000);
+      },
+      dayClick: function(date) {
+        // Aqui você pode adicionar a lógica para lidar com o clique em um dia
+      },
+  
+      locale: 'pt-br', // Define o idioma para português brasileiro
+      buttonText: {
+        today: 'Hoje',
+        month: 'Mês',
+        week: 'Semana',
+        day: 'Dia',
+      },
+      monthNames: [
+        'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+        'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
+      ],
+      monthNamesShort: [
+        'Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun',
+        'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'
+      ],
+      dayNames: [
+        'Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'
+      ],
+      dayNamesShort: [
+        'Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'
+      ]
+    });
+  });
+});
