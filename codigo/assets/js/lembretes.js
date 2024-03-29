@@ -1,3 +1,22 @@
+const lembretes = [
+    {
+      "title": "Lembrete 1",
+      "content": "Desligar o celular antes de começar",
+      "id": 1
+    },
+    {
+      "title": "Lembrete 2",
+      "content": "Pegar uma garrafa de água",
+      "id": 2
+    },
+    {
+      "id": 3,
+      "title": "Corrigir trabalhos",
+      "content": "Corrigir trabalhos."
+    }
+];
+let proximoIdLembrete = 4;
+
 //passando os elementos como objetos
 const formAddReminder = document.getElementById('formAddReminder')
 const formEditReminder = document.getElementById('formEditReminder')
@@ -33,7 +52,6 @@ btnCreateReminder.addEventListener('click', event => {
     }
 
     let reminder = {
-        id: 0,
         title: returnValeuById('title'),
         content: returnValeuById('content').replace(/(\r\n|\n|\r)/gm,"")
     }
@@ -45,7 +63,7 @@ btnCreateReminder.addEventListener('click', event => {
 
     //rolar até o fim da página para mostrar o novo lemrete adicionado
     setTimeout(() => { 
-        readReminders()
+        showReminders()
         window.scrollTo(0, document.body.scrollHeight)
     }, 2000)
 
@@ -78,7 +96,7 @@ btnEditReminder.addEventListener("click", (event) => {
 
     //atualizar a tabela da dados
     setTimeout(() => { 
-        readReminders()
+        showReminders()
     }, 2000)
 
 })
@@ -94,7 +112,7 @@ btnDeleteReminder.addEventListener('click', () => {
 
     //atualizar a tabela da dados
     setTimeout(() => { 
-        readReminders()
+        showReminders()
     }, 2000)
 })
 
@@ -130,23 +148,23 @@ function displayErrMessage(mensagem) {
 }
 
 //funcoes para exibir dados e modais na tela
-function showReminders(reminders) {
+function showReminders() {
 
     const table = document.getElementById('remindersTable');
     let content = '';
 
-    reminders.forEach(reminder => {
+    lembretes.forEach(lembrete => {
 
     content +=
     `<tr>
-        <td>${reminder.title}</td> 
-        <td>${reminder.content}</td> 
+        <td>${lembrete.title}</td> 
+        <td>${lembrete.content}</td> 
         <td class="text-center"><i class="bi bi-pencil" title="Editar" 
-            onclick="showReminder(${reminder.id}, '${reminder.title}', '${reminder.content}')">
+            onclick="showReminder(${lembrete.id}, '${lembrete.title}', '${lembrete.content}')">
         </i></td> 
 
         <td class="text-center"><i class="bi bi-trash" title="Excluir"
-            onclick="deleteConfirm(${reminder.id})"></i>
+            onclick="deleteConfirm(${lembrete.id})"></i>
         </td> 
     </tr>`
 
@@ -169,74 +187,17 @@ function deleteConfirm(id) {
     $('#modalDeleteReminder').modal('toggle')
 }
 
-//CRUD lembrete no json server
-const apiUrl = 'https://replit.com/@MateusADM/Json-Server-Web-API#data.json'
-
 function createReminder(reminder) {
-    fetch(apiUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(reminder)
-
-    })
-    .then(res => { 
-        if(res.status == 201) displaySuccsMessage('Lembrete adicionado com sucesso!') 
-        else displayErrMessage('O lembrete não foi adicionado!') 
-    })
-    .catch(error => {
-        console.error(error)
-    })
-}
-
-function readReminders() {
-    fetch(apiUrl, {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' }
-    })
-    .then(res => res.json())
-    .then(data => showReminders(data))
-    .catch(error => {
-        console.error(error)
-    })
-}
-
-function readReminder(id) {
-    fetch(`${apiUrl}/${id}`, {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' }
-    })
-    .then(res => res.json())
-    .then(data => {showReminder(data)})
-    .catch(error => {
-        console.error(error)
-    })
+    lembretes.push({"id": proximoIdLembrete, ...reminder });
+    proximoIdLembrete++;
 }
 
 function updateReminder(id, reminder) {
-    fetch(`${apiUrl}/${id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(reminder)
-
-    })
-    .then(res => { 
-        if(res.status == 200) displaySuccsMessage('Lembrete atualizado com sucesso!') 
-        else displayErrMessage('O lembrete não foi atualizado!') 
-    })
-    .catch(error => {
-        console.error(error)
-    })
+    const index = lembretes.findIndex(lembrete => lembrete.id == id);
+    lembretes[index] = {id: id, ...reminder};
 }
 
 function deleteReminder(id) {
-    fetch(`${apiUrl}/${id}`, {
-        method: 'DELETE'
-    })
-    .then(res => { 
-        if(res.status == 200) displaySuccsMessage('Lembrete excluído com sucesso!') 
-        else displayErrMessage('Não foi possível excluir o lembrete') 
-    })
-    .catch(error => {
-        console.error(error)
-    })
+    const index = lembretes.findIndex(lembrete => lembrete.id === id);
+    lembretes.splice(index, 1);
 }
