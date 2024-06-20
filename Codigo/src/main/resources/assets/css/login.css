@@ -1,0 +1,17 @@
+:root {
+    --background-color: #333;
+  
+    --text-color: #fff; 
+  }
+
+body {
+    background-color: var(--background-color);
+}
+ 
+label, h1 {
+    color: var(--text-color);
+}
+
+.logo {
+    width: 400px;
+}
