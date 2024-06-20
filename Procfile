@@ -1,1 +1,1 @@
-web: java -jar Codigo/target/ti2cc-1.0-SNAPSHOT.jar
+web: java -jar target/ti2cc-1.0-SNAPSHOT.jar
