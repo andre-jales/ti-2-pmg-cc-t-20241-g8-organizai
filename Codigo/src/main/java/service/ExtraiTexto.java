@@ -9,7 +9,7 @@ import com.azure.core.util.polling.SyncPoller;
 
 public class ExtraiTexto {
 
-
+    //
     private static final String endpoint = System.getenv("OCR_ORGANIZAI_ENDPOINT");
     private static final String key = System.getenv("OCR_ORGANIZAI_KEY");
 
