@@ -65,7 +65,7 @@ public class UsuarioDAO {
 		try {
 			PreparedStatement ps = conn.prepareStatement("INSERT INTO public.usuario(email, senhahash, nome) VALUES (?, ?, ?)");
 			ps.setString(1, usuario.getEmail());
-			ps.setString(2, argon2.hash(10, 65536, 1, usuario.getSenha()));
+			ps.setString(2, argon2.hash(10, 65536, 1, usuario.getSenha().toCharArray()));
 			ps.setString(3, usuario.getNome());
 			
 			int rowsInserted = ps.executeUpdate();
@@ -167,7 +167,7 @@ public class UsuarioDAO {
 			
 			if(rs.next()) {
 				// if(usuarioLogin.getSenha().equals(rs.getString("senhahash")))
-				if(argon2.verify(rs.getString("senhahash"), usuarioLogin.getSenha()))
+				if(argon2.verify(rs.getString("senhahash"), usuarioLogin.getSenha().toCharArray()))
 				{
 					usuario = new Usuario(rs.getInt("userid"),
 					null, 
