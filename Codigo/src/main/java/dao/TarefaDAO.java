@@ -1,12 +1,10 @@
 package dao;
 import java.sql.*;
 
-import io.github.cdimascio.dotenv.Dotenv;
 import model.Tarefa;
 
 public class TarefaDAO {
 
-	private static final Dotenv dotenv = Dotenv.configure().load();
 	
 	private Connection conn;
 	
@@ -16,14 +14,14 @@ public class TarefaDAO {
 	
 	public boolean connect() {
 		
-		String driverName = dotenv.get("DRIVER_NAME");
-        String serverName = dotenv.get("SERVER_NAME");
-        String mydb = dotenv.get("MYDB");
-        int port = Integer.parseInt(dotenv.get("PORT"));
+		String driverName = System.getenv("DRIVER_NAME");
+        String serverName = System.getenv("SERVER_NAME");
+        String mydb = System.getenv("MYDB");
+        int port = Integer.parseInt(System.getenv("PORT_DB"));
 
         String url = "jdbc:postgresql://" + serverName + ":" + port + "/" + mydb;
-        String username = dotenv.get("USER");
-        String password = dotenv.get("PASSWORD");
+        String username = System.getenv("USER");
+        String password = System.getenv("PASSWORD");
         boolean status = false;
 		
 		try {

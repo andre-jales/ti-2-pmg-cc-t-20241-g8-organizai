@@ -2,14 +2,12 @@ package dao;
 
 import java.sql.*;
 
-import io.github.cdimascio.dotenv.Dotenv;
 import de.mkammerer.argon2.Argon2;
 import de.mkammerer.argon2.Argon2Factory;
 import model.Usuario;
 
 public class UsuarioDAO {
 
-	private static final Dotenv dotenv = Dotenv.configure().load();
 	
 	private Connection conn;
 	private Argon2 argon2 = Argon2Factory.create();
@@ -20,14 +18,14 @@ public class UsuarioDAO {
 	
 	public boolean connect() {
 		
-		String driverName = dotenv.get("DRIVER_NAME");
-        String serverName = dotenv.get("SERVER_NAME");
-        String mydb = dotenv.get("MYDB");
-        int port = Integer.parseInt(dotenv.get("PORT"));
+		String driverName = System.getenv("DRIVER_NAME");
+        String serverName = System.getenv("SERVER_NAME");
+        String mydb = System.getenv("MYDB");
+        int port = Integer.parseInt(System.getenv("PORT_DB"));
 
         String url = "jdbc:postgresql://" + serverName + ":" + port + "/" + mydb;
-        String username = dotenv.get("USER");
-        String password = dotenv.get("PASSWORD");
+        String username = System.getenv("USER");
+        String password = System.getenv("PASSWORD");
         boolean status = false;
 		
 		try {

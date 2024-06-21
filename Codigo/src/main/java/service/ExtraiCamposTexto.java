@@ -8,7 +8,6 @@ import com.azure.ai.openai.models.ChatCompletionsOptions;
 import com.azure.ai.openai.models.ChatMessage;
 import com.azure.ai.openai.models.ChatRole;
 import com.azure.core.credential.AzureKeyCredential;
-import io.github.cdimascio.dotenv.Dotenv;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -19,10 +18,9 @@ import java.util.Locale;
 
 public class ExtraiCamposTexto {
 
-    private static final Dotenv dotenv = Dotenv.configure().load();
 
-    private static final String azureOpenaiKey = dotenv.get("GPT_ORGANIZAI_KEY");
-    private static final String endpoint = dotenv.get("GPT_ORGANIZAI_ENDPOINT");
+    private static final String azureOpenaiKey = System.getenv("GPT_ORGANIZAI_KEY");
+    private static final String endpoint = System.getenv("GPT_ORGANIZAI_ENDPOINT");
 
     public String gerarCamposParaTarefa(String text) {
 

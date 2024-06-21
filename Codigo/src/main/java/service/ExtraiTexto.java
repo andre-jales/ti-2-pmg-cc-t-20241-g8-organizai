@@ -6,14 +6,12 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.SyncPoller;
 
-import io.github.cdimascio.dotenv.Dotenv;
 
 public class ExtraiTexto {
 
-    private static final Dotenv dotenv = Dotenv.configure().load();
 
-    private static final String endpoint = dotenv.get("OCR_ORGANIZAI_ENDPOINT");
-    private static final String key = dotenv.get("OCR_ORGANIZAI_KEY");
+    private static final String endpoint = System.getenv("OCR_ORGANIZAI_ENDPOINT");
+    private static final String key = System.getenv("OCR_ORGANIZAI_KEY");
 
     public String extrairTextoDaImagem(byte[] dadosImagem) {
         DocumentAnalysisClient cliente = new DocumentAnalysisClientBuilder()
