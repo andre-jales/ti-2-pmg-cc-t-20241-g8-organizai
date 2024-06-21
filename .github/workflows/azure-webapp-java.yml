@@ -27,4 +27,4 @@ jobs:
       with:
         app-name: 'ti2-organizai'
         publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_93E670014EAB445F8B7986DC0C0CD5BE }}
-        package: 'Codigo/target/*.jar'  # Ajuste o caminho conforme necessário
+        package: 'Codigo/target/ti2cc-1.0-SNAPSHOT-jar-with-dependencies.jar'  # Ajuste o caminho conforme necessário
