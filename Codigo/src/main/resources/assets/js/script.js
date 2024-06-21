@@ -24,7 +24,7 @@ const btnGenerateTask = document.getElementById('btnGenerateTask');
 const btnLogout = document.getElementById('btnLogout');
 
 function createTask(task) {
-  fetch('http://ti2-organizai.azurewebsites.net/tarefas', {
+  fetch('https://ti2-organizai.azurewebsites.net/tarefas', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -39,7 +39,7 @@ function createTask(task) {
 }
 
 function updateTask(task) {
-  fetch('http://ti2-organizai.azurewebsites.net/tarefas/update', {
+  fetch('https://ti2-organizai.azurewebsites.net/tarefas/update', {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -53,7 +53,7 @@ function updateTask(task) {
 }
 
 function deleteTask(id) {
-  fetch(`http://ti2-organizai.azurewebsites.net/tarefas/delete/${id}`)
+  fetch(`https://ti2-organizai.azurewebsites.net/tarefas/delete/${id}`)
     .then(() => carregaCalendario(undefined, false))
     .catch((error) => {
       console.error('Error:', error);
@@ -63,7 +63,7 @@ function deleteTask(id) {
 function updateStatus(taskId, updatedStatus) {
   let task;
 
-  fetch(`http://ti2-organizai.azurewebsites.net/tarefas/${taskId}`)
+  fetch(`https://ti2-organizai.azurewebsites.net/tarefas/${taskId}`)
     .then(response => response.json())
     .then(data => {
       task = data;
@@ -85,7 +85,7 @@ function generateTask() {
   reader.readAsArrayBuffer(file);
 
   reader.onload = function (event) {
-    fetch(`http://ti2-organizai.azurewebsites.net/gerarTarefa`, {
+    fetch(`https://ti2-organizai.azurewebsites.net/gerarTarefa`, {
       method: 'POST',
       body: event.target.result,
     })
@@ -121,7 +121,7 @@ function toggleLoadingModalAddTask() {
 }
 
 btnLogout.addEventListener('click', () => {
-  fetch('http://ti2-organizai.azurewebsites.net/logout', {
+  fetch('https://ti2-organizai.azurewebsites.net/logout', {
     method: 'GET',
   })
     .catch((error) => {
@@ -216,7 +216,7 @@ function formatDate(dateValue) {
 
 function showReminderModal(){
   $('#modalReminderTab').modal('show');
-  fetch('http://ti2-organizai.azurewebsites.net/lembretes')
+  fetch('https://ti2-organizai.azurewebsites.net/lembretes')
   .then(dados => dados.json())
   .then(dados =>{
     const body = document.getElementById('modal-reminders');
@@ -420,7 +420,7 @@ function showTasks(tarefas) {
 
 function showTasksInTable() {
 
-  fetch('http://ti2-organizai.azurewebsites.net/tarefas')
+  fetch('https://ti2-organizai.azurewebsites.net/tarefas')
     .then(response => response.json())
     .then(data => {
       toggleLoadingTasksInTable();
@@ -815,7 +815,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 function carregaCalendario(loading = false, reloadKanban = true) {
-  fetch('http://ti2-organizai.azurewebsites.net/tarefas')
+  fetch('https://ti2-organizai.azurewebsites.net/tarefas')
   .then(response => response.json())
   .then(data => {
       loading && toggleLoadingTasks();
@@ -891,7 +891,7 @@ function carregaCalendario(loading = false, reloadKanban = true) {
               }
             });
 
-            fetch('http://ti2-organizai.azurewebsites.net/tarefas/update', {
+            fetch('https://ti2-organizai.azurewebsites.net/tarefas/update', {
               method: 'PUT',
               headers: {
                 'Content-Type': 'application/json',
@@ -933,7 +933,7 @@ function carregaCalendario(loading = false, reloadKanban = true) {
               if (eventoAtualizado.atrasada !== true) {
                 eventoAtualizado.atrasada = true;
 
-                fetch(`http://ti2-organizai.azurewebsites.net/tarefas/update`, {
+                fetch(`https://ti2-organizai.azurewebsites.net/tarefas/update`, {
                   method: 'PUT',
                   headers: {
                     'Content-Type': 'application/json',
@@ -945,7 +945,7 @@ function carregaCalendario(loading = false, reloadKanban = true) {
               eventoAtualizado.atrasada = false;
 
 
-              fetch(`http://ti2-organizai.azurewebsites.net/tarefas/update`, {
+              fetch(`https://ti2-organizai.azurewebsites.net/tarefas/update`, {
                 method: 'PUT',
                 headers: {
                   'Content-Type': 'application/json',
