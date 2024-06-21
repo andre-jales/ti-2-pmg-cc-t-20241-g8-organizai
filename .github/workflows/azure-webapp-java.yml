@@ -20,11 +20,11 @@ jobs:
         java-version: '17'
 
     - name: Build with Maven
-      run: mvn -f Codigo/pom.xml clean install  # Certifique-se de que o caminho está correto
+      run: mvn -f Codigo/pom.xml clean package  # Certifique-se de que o caminho está correto
 
     - name: Azure WebApp
       uses: Azure/webapps-deploy@v3.0.1        
       with:
         app-name: 'ti2-organizai'
         publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_93E670014EAB445F8B7986DC0C0CD5BE }}
-        package: 'Codigo/target/ti2cc-1.0-SNAPSHOT-jar-with-dependencies.jar'  # Ajuste o caminho conforme necessário
+        package: 'Codigo/target/*.jar'  # Ajuste o caminho conforme necessário
