@@ -1,0 +1,13 @@
+app\Main.class
+dao\TarefaDAO.class
+model\Usuario.class
+service\UsuarioService.class
+service\ExtraiCamposTexto.class
+dao\UsuarioDAO.class
+dao\LembreteDAO.class
+model\Tarefa.class
+service\GerarTarefaService.class
+service\TarefaService.class
+model\Lembrete.class
+service\LembreteService.class
+service\ExtraiTexto.class

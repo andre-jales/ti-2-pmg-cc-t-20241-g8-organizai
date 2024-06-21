@@ -1,0 +1,30 @@
+name: Build and Deploy Java app to Azure Web App
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout          
+      uses: actions/checkout@v4.1.7
+
+    - name: Setup Java JDK        
+      uses: actions/setup-java@v4.2.1
+      with:
+        distribution: 'adopt'
+        java-version: '17'
+
+    - name: Build with Maven
+      run: mvn -f Codigo/pom.xml clean install  # Certifique-se de que o caminho está correto
+
+    - name: Azure WebApp
+      uses: Azure/webapps-deploy@v3.0.1        
+      with:
+        app-name: 'ti2-organizai'
+        publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_93E670014EAB445F8B7986DC0C0CD5BE }}
+        package: 'Codigo/target/*.jar'  # Ajuste o caminho conforme necessário
