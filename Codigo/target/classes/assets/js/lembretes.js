@@ -23,7 +23,7 @@ const deleteId = document.getElementById('inputDeleteId')
 const btnLogout = document.getElementById('btnLogout');
 
 btnLogout.addEventListener('click', () => {
-    fetch('http://localhost:4567/logout', {
+    fetch('http://ti2-organizai.azurewebsites.net/logout', {
       method: 'GET',
     })
       .catch((error) => {
@@ -191,7 +191,7 @@ function deleteConfirm(id) {
 }
 
 function createReminder(reminder) {
-    fetch('http://localhost:4567/lembretes', {
+    fetch('http://ti2-organizai.azurewebsites.net/lembretes', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(reminder)
@@ -203,7 +203,7 @@ function createReminder(reminder) {
 }
 
 function readReminders() {
-    fetch('http://localhost:4567/lembretes')
+    fetch('http://ti2-organizai.azurewebsites.net/lembretes')
     .then(response => response.json())
     .then(data => {
         toggleLoadingRemindersInTable();
@@ -215,7 +215,7 @@ function readReminders() {
 }
 
 function readReminder(id) {
-    fetch(`http://localhost:4567/lembretes/${id}`, {
+    fetch(`http://ti2-organizai.azurewebsites.net/lembretes/${id}`, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' }
     })
@@ -229,7 +229,7 @@ function readReminder(id) {
 function updateReminder(id, reminder) {
     reminder = {lembreteID: id, ...reminder};
     
-    fetch('http://localhost:4567/lembretes/update', {
+    fetch('http://ti2-organizai.azurewebsites.net/lembretes/update', {
     method: 'PUT', 
     headers: {
       'Content-Type': 'application/json',
@@ -242,7 +242,7 @@ function updateReminder(id, reminder) {
 }
 
 function deleteReminder(id) {
-    fetch(`http://localhost:4567/lembretes/delete/${id}`, {
+    fetch(`http://ti2-organizai.azurewebsites.net/lembretes/delete/${id}`, {
         method: 'GET'
     })
     .catch(error => {
